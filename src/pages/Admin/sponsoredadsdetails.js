@@ -1,0 +1,361 @@
+import React, { useEffect, useState } from "react";
+import Layout1 from "../../components/Layout/Layout1";
+import MyImage from "../../components/Blogs/herosection";
+import Star from "../../components/UI/start";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { BlogDescription } from "../../Simple data";
+import axios from "axios";
+import dateFormat from "dateformat";
+import AnchorLink from "react-anchor-link-smooth-scroll";
+import AdminLayout from "../../components/Dashboard/Layout/adminlayout";
+const SponsoredAdsDetails = () => {
+  const userInfo = localStorage.getItem("UserInformation");
+  const userdata = JSON.parse(userInfo);
+  let navigate = useNavigate();
+  var token = userdata?.token;
+  var isAdmin = userdata?.user.isAdmin;
+
+  const today = new Date().toISOString().split("T")[0];
+  // State variable to manage the minimum date
+  const [minDate, setMinDate] = useState(today);
+
+  const [ListingDetails, setListingDetails] = useState([]);
+
+  const [ChangeStatus, setChangeStatus] = useState();
+  const [Subscrption, setSubscrption] = useState();
+
+  let { id } = useParams();
+
+  // ------------------------------------api---------------------------------------------
+
+  useEffect(() => {
+    if (!isAdmin) {
+      navigate("/login");
+    }
+    getSponsoredAdsData();
+  }, []);
+
+  // ----------------------------views---API---------------------------------------
+  //   const ViewsFun = async () => {
+  //     try {
+  //       await axios.put(`${process.env.REACT_APP_API}/api/v1/job/view/${id}`);
+  //     } catch (error) {
+  //       console.error("Error adding views:", error);
+  //     }
+  //   };
+
+  const getSponsoredAdsData = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/get-all-sponsered-ads`
+      );
+      console.log(res);
+      const data = res.data?.data?.filter((item) => item._id == id);
+      setListingDetails(data);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  // ---------------------------update-status---------------------------
+  const updatefun = async (id) => {
+    if (!token) {
+      navigate("/login");
+    }
+    try {
+      const res = await axios.put(
+        `${process.env.REACT_APP_API}/api/v1/job/admin-update/${id}`,
+        data,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      console.log("after update", res);
+    } catch (error) {
+      console.error("Error Status Update:", error);
+    }
+  };
+
+  const data = {
+    status: ChangeStatus,
+    subscrption: Subscrption,
+    expDate: minDate,
+  };
+  const UpdatedStatus = async (id) => {
+    updatefun(id);
+  };
+
+  console.log("test", ListingDetails);
+  return (
+    <AdminLayout>
+      {ListingDetails?.map((res, i) => (
+        <div className="pb-10">
+          <div className="m-0.5 lg:w-11/12 mx-auto">
+            <div className="w-full md:pt-10 hidden md:block">
+              <div className="">
+                <h2 className="font-semibold text-xl"> Details :</h2>
+              </div>
+
+              <div className=" flex flex-col justify-between lg:w-10/12">
+                <div className="">
+                  {" "}
+                  <div className="flex gap-x-2 items-center py-1.5">
+                    <i className="fa-regular fa-user text-teal-400"></i>{" "}
+                    <h3 className="font-semibold">Name :</h3>{" "}
+                    <p>{res?.createdBy[0]?.name}</p>
+                  </div>{" "}
+                  <div className="flex gap-x-2 items-center py-1.5">
+                    <i className="fa-regular fa-envelope  text-teal-400"></i>{" "}
+                    <h3 className="font-semibold">Email :</h3>{" "}
+                    <p>{res?.createdBy[0]?.email}</p>
+                  </div>{" "}
+                </div>
+                <div className="">
+                  <div className="flex gap-x-2 items-center py-1.5">
+                    <i className="fa-solid fa-globe  text-teal-400"></i>{" "}
+                    <h3 className="font-semibold">Url :</h3>{" "}
+                    <p>{res?.adsUrl}</p>
+                  </div>
+                  <div className="flex gap-x-2 items-center py-1.5">
+                    <i className="fa-solid fa-clock text-teal-400"></i>{" "}
+                    <h3 className="font-semibold">Created Date :</h3>{" "}
+                    <p>{dateFormat(res?.timestamp, " mmmm dS, yyyy")}</p>
+                  </div>
+                  <div className="flex gap-x-2 items-center py-1.5">
+                    <i className="fa-solid fa-clock text-teal-400"></i>{" "}
+                    <h3 className="font-semibold">Ad Expire Date :</h3>{" "}
+                    <p>{dateFormat(res?.expDate, " mmmm dS, yyyy")}</p>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-sm">
+                    Category :{" "}
+                    <span className="text-gray-900">{res?.category}</span>
+                  </p>
+                  <p className="text-sm">
+                    Subscrption :{" "}
+                    <span className="text-green-600">{res?.subscrption}</span>
+                  </p>
+                  <p className="text-sm">
+                    Current Status :{" "}
+                    <span
+                      className={`${
+                        res.status == "active"
+                          ? "text-green-700"
+                          : "text-yellow-700"
+                      }`}
+                    >
+                      {res?.status}
+                    </span>
+                  </p>
+                  <div className="mt-2">
+                    <p className="text-sm text-gray-500">Update Status</p>
+                    <select
+                      onChange={(e) => setChangeStatus(e.target.value)}
+                      id="status"
+                      name="status"
+                      className="w-1/2 h-7 border border-sky-500 focus:outline-none focus:border-sky-500 rounded px-2 md:px-3 py-0 md:py-0.5 tracking-wider"
+                    >
+                      <option value="">Select</option>
+                      <option value="active">Active</option>
+                      <option value="pending">Pending</option>
+                      <option value="inactive">InActive</option>
+                    </select>
+                    <button
+                      onClick={() => UpdatedStatus(res._id)}
+                      className="p-1 text-white bg-blue-500 rounded-sm text-sm ml-2"
+                    >
+                      Update
+                    </button>
+                  </div>
+
+                  <div className="mt-2">
+                    <p className="text-sm text-gray-500">Update subscrption</p>
+                    <select
+                      onChange={(e) => setSubscrption(e.target.value)}
+                      id="status"
+                      name="status"
+                      className="w-1/2 h-7 border border-sky-500 focus:outline-none focus:border-sky-500 rounded px-2 md:px-3 py-0 md:py-0.5 tracking-wider"
+                    >
+                      <option value="">Select</option>
+                      <option value="free">Free</option>
+                      <option value="basic">Basic</option>
+                      <option value="premium">Premium</option>
+                      <option value="premiumpluse">Premium Pluse</option>
+                    </select>
+                    <button
+                      onClick={() => UpdatedStatus(res._id)}
+                      className="p-1 text-white bg-blue-500 rounded-sm text-sm ml-2"
+                    >
+                      Update
+                    </button>
+                  </div>
+
+                  <div className="mt-2">
+                    <p className="text-sm text-gray-500">Update Expiry Date</p>
+                    <input
+                      type="date"
+                      className="w-1/2 h-7 border border-sky-500 focus:outline-none focus:border-sky-500 rounded px-2 md:px-3 py-0 md:py-0.5 tracking-wider"
+                      min={minDate}
+                      onChange={(e) => setMinDate(e.target.value)}
+                    />
+                    <button
+                      onClick={() => UpdatedStatus(res._id)}
+                      className="p-1 text-white bg-blue-500 rounded-sm text-sm ml-2"
+                    >
+                      Update
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <main className="px-0.5 sm:w-11/12 mx-auto sm:pt-8">
+            {/* <Breadcrumb /> */}
+            {/* <Header imgs={herosectionImg} /> */}
+            <div className="flex justify-between">
+              <div className="w-full px-1 sm:px-0 mb-8">
+                <div className="flex flex-col md:flex-row gap-x-5">
+                  <div className="flex-1">
+                    <div className="w-full pt-10 md:hidden">
+                      <div className="">
+                        <h2 className="font-semibold text-xl">Details</h2>
+                      </div>
+
+                      <div className=" flex flex-col md:flex-row justify-between lg:w-10/12">
+                        <div className="">
+                          {" "}
+                          <div className="flex gap-x-2 items-center py-1.5">
+                            <i className="fa-regular fa-user text-teal-400"></i>{" "}
+                            <h3 className="font-semibold"> Name :</h3>{" "}
+                            <p>{res?.createdBy[0]?.name}</p>
+                          </div>{" "}
+                          <div className="flex gap-x-2 items-center py-1.5">
+                            <i className="fa-regular fa-envelope  text-teal-400"></i>{" "}
+                            <h3 className="font-semibold"> Email :</h3>{" "}
+                            <p>{<p>{res?.createdBy[0]?.email}</p>}</p>
+                          </div>{" "}
+                        </div>
+                        <div className="">
+                          <div className="flex gap-x-2 items-center py-1.5">
+                            <i className="fa-solid fa-globe  text-teal-400"></i>{" "}
+                            <h3 className="font-semibold">Url :</h3>{" "}
+                            <p>{res?.adsUrl}</p>
+                          </div>
+                          <div className="flex gap-x-2 items-center py-1.5">
+                            <i className="fa-solid fa-clock text-teal-400"></i>{" "}
+                            <h3 className="font-semibold">Created Date :</h3>{" "}
+                            <p>
+                              {dateFormat(res?.timestamp, " mmmm dS, yyyy")}
+                            </p>
+                          </div>
+                          <div className="flex gap-x-2 items-center py-1.5">
+                            <i className="fa-solid fa-clock text-teal-400"></i>{" "}
+                            <h3 className="font-semibold">Ad Expire Date :</h3>{" "}
+                            <p>{dateFormat(res?.expDate, " mmmm dS, yyyy")}</p>
+                          </div>
+                        </div>
+                        <div>
+                          <p className="text-sm">
+                            Category :{" "}
+                            <span className="text-gray-900">
+                              {res?.category}
+                            </span>
+                          </p>
+                          <p className="text-sm">
+                            Subscrption :{" "}
+                            <span className="text-green-600">
+                              {res?.subscrption}
+                            </span>
+                          </p>
+                          <p className="text-sm">
+                            Current Status :{" "}
+                            <span
+                              className={`${
+                                res.status == "active"
+                                  ? "text-green-700"
+                                  : "text-yellow-700"
+                              }`}
+                            >
+                              {res?.status}
+                            </span>
+                          </p>
+                          <div className="mt-2">
+                            <p className="text-sm text-gray-500">
+                              Update Status
+                            </p>
+                            <select
+                              onChange={(e) => setChangeStatus(e.target.value)}
+                              id="status"
+                              name="status"
+                              className="w-1/2 h-7 border border-sky-500 focus:outline-none focus:border-sky-500 rounded px-2 md:px-3 py-0 md:py-0.5 tracking-wider"
+                            >
+                              <option value="">Select</option>
+                              <option value="active">Active</option>
+                              <option value="pending">Pending</option>
+                              <option value="inactive">InActive</option>
+                            </select>
+                            <button
+                              onClick={() => UpdatedStatus(res._id)}
+                              className="p-1 text-white bg-blue-500 rounded-sm text-sm ml-2"
+                            >
+                              Update
+                            </button>
+                          </div>
+
+                          <div className="mt-2">
+                            <p className="text-sm text-gray-500">
+                              Update subscrption
+                            </p>
+                            <select
+                              onChange={(e) => setSubscrption(e.target.value)}
+                              id="status"
+                              name="status"
+                              className="w-1/2 h-7 border border-sky-500 focus:outline-none focus:border-sky-500 rounded px-2 md:px-3 py-0 md:py-0.5 tracking-wider"
+                            >
+                              <option value="">Select</option>
+                              <option value="free">Free</option>
+                              <option value="basic">Basic</option>
+                              <option value="premium">Premium</option>
+                              <option value="premiumpluse">
+                                Premium Pluse
+                              </option>
+                            </select>
+                            <button
+                              onClick={() => UpdatedStatus(res._id)}
+                              className="p-1 text-white bg-blue-500 rounded-sm text-sm ml-2"
+                            >
+                              Update
+                            </button>
+                          </div>
+
+                          <div className="mt-2">
+                            <p className="text-sm text-gray-500">
+                              Update Expiry Date
+                            </p>
+                            <input
+                              type="date"
+                              className="w-1/2 h-7 border border-sky-500 focus:outline-none focus:border-sky-500 rounded px-2 md:px-3 py-0 md:py-0.5 tracking-wider"
+                              min={minDate}
+                              onChange={(e) => setMinDate(e.target.value)}
+                            />
+                            <button
+                              onClick={() => UpdatedStatus(res._id)}
+                              className="p-1 text-white bg-blue-500 rounded-sm text-sm ml-2"
+                            >
+                              Update
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+      ))}
+    </AdminLayout>
+  );
+};
+
+export default SponsoredAdsDetails;

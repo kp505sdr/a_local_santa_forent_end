@@ -1,0 +1,17 @@
+{
+  "listings": [
+    {
+      "title": "Blog Title Here",
+      "email": "dk123@gmail.com",
+      "mobile": "123456789",
+      "description": "This hidden gem boasts a sprawling 10-acre property, perfect for those seeking space and endless possibilities",
+      "name": "Deepak",
+      "address": "mmmm",
+      "url": "http://localhost:3000/business-form",
+      "id": 1
+    },
+    {
+      "id": 2
+    }
+  ]
+}
