@@ -109,12 +109,6 @@ import SeeReviews from "./components/Table/SeeReviews";
 import UpdateBlogByAdmin from "./pages/Admin/UpdateBlogByAdmin";
 import GoogleUserPage from "./pages/auth/GoogleUserPage";
 
-
-
-
-
-
-
 function App() {
   const user = useSelector((state) => state.user);
   const userInfo = localStorage.getItem("UserInformation");
@@ -126,8 +120,7 @@ function App() {
       <Route exact path="/" element={<Home />} />
       <Route exact path="/register" element={<Register />} />
       <Route exact path="/login" element={<Login />} />
-      <Route exact path="/google-login" element={<GoogleUserPage/>} />
-      
+      <Route exact path="/google-login" element={<GoogleUserPage />} />
       <Route exact path="/verify/:id/:token" element={<EmailVerify />} />
       <Route exact path="/forget-password" element={<ForgetPassword />} />
       <Route exact path="/resetpassword/:token" element={<ChangePsd />} />
@@ -162,18 +155,8 @@ function App() {
         path="/view-more/EventMovies"
         element={<ViewMoreEventMovies />}
       />
-      <Route
-        exact
-        path="/success"
-        element={<SuccessPage/>}
-      />
-       <Route
-        exact
-        path="/cancel"
-        element={<CancelPage/>}
-      />
-
-
+      <Route exact path="/success" element={<SuccessPage />} />
+      <Route exact path="/cancel" element={<CancelPage />} />
       <Route
         exact
         path="/view-more/health-wellness"
@@ -253,7 +236,7 @@ function App() {
         path="/pending-userlisting"
         element={
           <ProtectedRoute>
-            <PendingListing/>
+            <PendingListing />
           </ProtectedRoute>
         }
       />
@@ -262,7 +245,7 @@ function App() {
         path="/active-userlisting"
         element={
           <ProtectedRoute>
-            <ActiveListing/>
+            <ActiveListing />
           </ProtectedRoute>
         }
       />
@@ -293,7 +276,6 @@ function App() {
           </ProtectedRoute>
         }
       />
-
       <Route
         exact
         path="/user-bloglist-edit-blog/:id"
@@ -340,34 +322,29 @@ function App() {
           </ProtectedRoute>
         }
       />
-   
-       <Route
+      <Route
         exact
         path="/view-user-listing/:id"
         element={
           <ProtectedRoute>
-          <UserListingCount/>
+            <UserListingCount />
           </ProtectedRoute>
-          
         }
       />
-
       <Route
         exact
         path="/reviews-and-listing/:id"
         element={<ReviewsAndListing />}
       />
-   
-        <Route
+      <Route
         exact
         path="/reviews-view/:id"
         element={
           <ProtectedRoute>
-            <SeeReviews/>
+            <SeeReviews />
           </ProtectedRoute>
         }
       />
-
       <Route
         exact
         path="/profile-details"
@@ -377,7 +354,6 @@ function App() {
           </ProtectedRoute>
         }
       />
-   
       <Route
         exact
         path="/add-blog"
@@ -387,7 +363,6 @@ function App() {
           </ProtectedRoute>
         }
       />
-    
       <Route
         exact
         path="/profile-setting"
@@ -495,12 +470,12 @@ function App() {
       />
       <Route
         exact
-        path="/create-sponsored-ads"
+        path="/spansored-ads-create"
         element={<ProtectedAdmin Admindashboard={SpansoredAds} />}
       />{" "}
       <Route
         exact
-        path="/sponsored-ads-details/:id"
+        path="/spansored-ads-details/:id"
         element={<ProtectedAdmin Admindashboard={SponsoredAdsDetails} />}
       />
       <Route
@@ -523,14 +498,12 @@ function App() {
         path="/admin-profile-detail"
         element={<ProtectedAdmin Admindashboard={AdminProfileDetails} />}
       />
-       <Route
+      <Route
         exact
         path="/user-details/:id"
         element={<ProtectedAdmin Admindashboard={UserRole} />}
       />
-
-
-     <Route
+      <Route
         exact
         path="/mails-alerts"
         element={<ProtectedAdmin Admindashboard={MailsAlert} />}
@@ -550,29 +523,26 @@ function App() {
         path="/listing-ads-update/:id"
         element={<ProtectedAdmin Admindashboard={Updatelistdata} />}
       />
-        <Route
+      <Route
         exact
         path="/blogs"
         element={<ProtectedAdmin Admindashboard={Bloglist} />}
       />
-        <Route
+      <Route
         exact
         path="/comments"
         element={<ProtectedAdmin Admindashboard={Comments} />}
       />
-          <Route
+      <Route
         exact
         path="/comments-view/:id"
         element={<ProtectedAdmin Admindashboard={CommentView} />}
       />
-          <Route
+      <Route
         exact
         path="/blogs-edit/:id"
         element={<ProtectedAdmin Admindashboard={UpdateBlogByAdmin} />}
       />
-
-      
-
     </Routes>
   );
 }
