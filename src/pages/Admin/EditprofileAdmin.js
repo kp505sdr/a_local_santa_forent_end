@@ -1,7 +1,224 @@
-import React from "react";
+// import React from "react";
+// import AdminLayout from "../../components/Dashboard/Layout/adminlayout";
+
+// const EditprofileAdmin = () => {
+//   return (
+//     <AdminLayout>
+//       <div className="my-5">
+//         <div className="flex flex-wrap">
+//           <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-0 sm:px-4">
+//             {/* <CardLineChart /> */}
+
+//             <div className="max-w-md mx-auto mt-10 bg-white shadow-lg rounded-lg overflow-hidden">
+//               <div className="text-2xl py-4 px-6 text-center font-bold uppercase">
+//                 Profile
+//               </div>
+//               <form className="py-4 px-6" action method="POST">
+//                 <div className="mb-4">
+//                   <label
+//                     className="block text-gray-700 font-bold mb-2"
+//                     htmlFor="name"
+//                   >
+//                     Name
+//                   </label>
+//                   <input
+//                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+//                     id="name"
+//                     type="text"
+//                     placeholder="Enter your name"
+//                   />
+//                 </div>
+
+//                 <div className="mb-4">
+//                   <label
+//                     className="block text-gray-700 font-bold mb-2"
+//                     htmlFor="phone"
+//                   >
+//                     Phone Number
+//                   </label>
+//                   <input
+//                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+//                     id="phone"
+//                     type="tel"
+//                     placeholder="Enter your phone number"
+//                   />
+//                 </div>
+//                 <div className="mb-4">
+//                   <label
+//                     className="block text-gray-700 font-bold mb-2"
+//                     htmlFor="date"
+//                   >
+//                     Gender
+//                   </label>
+//                   <div className="flex">
+//                     {" "}
+//                     <label class="flex radio p-2 cursor-pointer">
+//                       <input
+//                         class="my-auto transform scale-125"
+//                         type="radio"
+//                         name="sfg"
+//                       />
+//                       <div class="title px-2">Male</div>
+//                     </label>
+//                     <label class="flex radio p-2 cursor-pointer">
+//                       <input
+//                         class="my-auto transform scale-125"
+//                         type="radio"
+//                         name="sfg"
+//                       />
+//                       <div class="title px-2">female</div>
+//                     </label>
+//                   </div>
+//                 </div>
+//                 <div className="mb-4">
+//                   <label
+//                     className="block text-gray-700 font-bold mb-2"
+//                     htmlFor="social-media"
+//                   >
+//                     Social Media
+//                   </label>
+//                   <input
+//                     className="shadow appearance-none mb-2 border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+//                     type="url"
+//                     placeholder="facebook"
+//                   />{" "}
+//                   <input
+//                     className="shadow appearance-none mb-2 border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+//                     type="url"
+//                     placeholder="Linkdin"
+//                   />{" "}
+//                   <input
+//                     className="shadow appearance-none mb-2 border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+//                     type="url"
+//                     placeholder="Youtube"
+//                   />{" "}
+//                   <input
+//                     className="shadow appearance-none mb-2 border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+//                     type="url"
+//                     placeholder="X"
+//                   />
+//                 </div>
+//                 <div className="mb-4">
+//                   <label
+//                     className="block text-gray-700 font-bold mb-2"
+//                     htmlFor="date"
+//                   >
+//                     Profile Pic
+//                   </label>
+//                   <input
+//                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+//                     type="file"
+//                     placeholder="Select a date"
+//                   />
+//                 </div>
+
+//                 <div className="flex items-center justify-center mb-4">
+//                   <button
+//                     className="bg-gray-900 text-white py-2 px-4 rounded hover:bg-gray-800 focus:outline-none focus:shadow-outline"
+//                     type="submit"
+//                   >
+//                     Update
+//                   </button>
+//                 </div>
+//               </form>
+//             </div>
+//           </div>
+//           <div className="w-full xl:w-4/12 px-4">{/* <CardBarChart /> */}</div>
+//         </div>
+//       </div>
+//     </AdminLayout>
+//   );
+// };
+
+// export default EditprofileAdmin;
+import React, { useEffect, useState } from "react";
+import Layout from "../../components/Dashboard/Layout";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import AdminLayout from "../../components/Dashboard/Layout/adminlayout";
 
 const EditprofileAdmin = () => {
+  const [profilePic,setProfilePic]=useState()
+  const [dbProfilePic,setDbProfilePic]=useState()
+  const [name,setName]=useState()
+  const [mobile,setMobile]=useState()
+  const [gender,setGender]=useState()
+  const [facebook,setfacebook]=useState()
+  const [youtube,setyoutube]=useState()
+  const [linkedin,setlinkedin]=useState()
+  const [x,setX]=useState()
+  const [userProfile,setUserProfile]=useState()
+  
+  const userInfo = localStorage.getItem("UserInformation");
+  const userdata = JSON.parse(userInfo);
+  let token=userdata?.token
+  const Navigate=useNavigate()
+// -----------------call---api---------------------------
+
+
+useEffect(() => {
+  getUserData();
+}, [token]);
+
+const getUserData = async () => {
+  try {
+    const res = await axios.get(`${process.env.REACT_APP_API}/api/v1/getsingle/user`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+     
+    });
+    console.log(res?.data)
+    setDbProfilePic(res?.data?.profilepic)
+    setName(res?.data?.name)
+    setMobile(res?.data?.mobile)
+    setGender(res?.data?.gender)
+    setfacebook(res?.data?.socialMedia?.facebook)
+    setyoutube(res?.data?.socialMedia?.youtube)
+    setlinkedin(res?.data?.socialMedia?.linkedin)
+    setX(res?.data?.socialMedia?.x)
+  
+   
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+   
+  }}
+
+
+// -----------------------------update----------------------------------------
+const UpdateUserData = async (updatedData) => {
+  try {
+    const res = await axios.put(`${process.env.REACT_APP_API}/api/v1/update/user/profile`,{updatedData},{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+     
+    });
+   
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+   
+  }}
+
+  let updatedData={
+    profilePic:profilePic,
+    name:name,
+    mobile:mobile,
+    gender:gender,
+    socialMedia:{
+      facebook:facebook,
+      youtube:youtube,
+      linkedin:linkedin,
+      x:x
+    }
+  }
+
+  const HandleSubmit=async(e)=>{
+    e.preventDefault()
+   
+    UpdateUserData(updatedData)
+    Navigate("/admin-profile-detail")
+  }
   return (
     <AdminLayout>
       <div className="my-5">
@@ -13,7 +230,7 @@ const EditprofileAdmin = () => {
               <div className="text-2xl py-4 px-6 text-center font-bold uppercase">
                 Profile
               </div>
-              <form className="py-4 px-6" action method="POST">
+              <form onSubmit={HandleSubmit} className="py-4 px-6" action method="POST">
                 <div className="mb-4">
                   <label
                     className="block text-gray-700 font-bold mb-2"
@@ -24,6 +241,8 @@ const EditprofileAdmin = () => {
                   <input
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     id="name"
+                    value={name}
+                    onChange={(e)=>setName(e.target.value)}
                     type="text"
                     placeholder="Enter your name"
                   />
@@ -39,7 +258,9 @@ const EditprofileAdmin = () => {
                   <input
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     id="phone"
-                    type="tel"
+                    type="number"
+                    value={mobile}
+                    onChange={(e)=>setMobile(e.target.value)}
                     placeholder="Enter your phone number"
                   />
                 </div>
@@ -54,9 +275,12 @@ const EditprofileAdmin = () => {
                     {" "}
                     <label class="flex radio p-2 cursor-pointer">
                       <input
-                        class="my-auto transform scale-125"
+                        class="my-auto transform scale-125 "
                         type="radio"
+                        checked={gender=="male"?"checked":""}
                         name="sfg"
+                        value="male"
+                        onChange={(e)=>setGender(e.target.value)}
                       />
                       <div class="title px-2">Male</div>
                     </label>
@@ -64,9 +288,12 @@ const EditprofileAdmin = () => {
                       <input
                         class="my-auto transform scale-125"
                         type="radio"
+                        checked={gender=="female"?"checked":""}
                         name="sfg"
+                        value="female"
+                        onChange={(e)=>setGender(e.target.value)}
                       />
-                      <div class="title px-2">female</div>
+                      <div class="title px-2">Female</div>
                     </label>
                   </div>
                 </div>
@@ -80,35 +307,46 @@ const EditprofileAdmin = () => {
                   <input
                     className="shadow appearance-none mb-2 border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     type="url"
+                    value={facebook}
+                    onChange={(e)=> setfacebook(e.target.value)}
                     placeholder="facebook"
                   />{" "}
                   <input
                     className="shadow appearance-none mb-2 border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     type="url"
                     placeholder="Linkdin"
+                    value={linkedin}
+                    onChange={(e)=> setlinkedin(e.target.value)}
                   />{" "}
                   <input
                     className="shadow appearance-none mb-2 border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     type="url"
                     placeholder="Youtube"
+                    value={youtube}
+                    onChange={(e)=> setyoutube(e.target.value)}
                   />{" "}
                   <input
                     className="shadow appearance-none mb-2 border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     type="url"
                     placeholder="X"
+                    value={x}
+                    onChange={(e)=> setX(e.target.value)}
                   />
                 </div>
                 <div className="mb-4">
                   <label
                     className="block text-gray-700 font-bold mb-2"
-                    htmlFor="date"
+                    htmlFor="profile"
                   >
                     Profile Pic
                   </label>
+                  <img src={dbProfilePic} alt="profile" className="h-16 w-16 text-center"/>
                   <input
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     type="file"
-                    placeholder="Select a date"
+                    placeholder="Select Profile Picture"
+                    value={profilePic}
+                    onChange={(e)=>setProfilePic(e.target.files)}
                   />
                 </div>
 
@@ -131,3 +369,4 @@ const EditprofileAdmin = () => {
 };
 
 export default EditprofileAdmin;
+

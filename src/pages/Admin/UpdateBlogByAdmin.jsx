@@ -1,22 +1,36 @@
-import React, { useRef, useState } from "react";
+// import React from 'react'
 
+// const UpdateBlogByAdmin = () => {
+//   return (
+//     <div>UpdateBlogByAdmin</div>
+//   )
+// }
+
+// export default UpdateBlogByAdmin
+import React, { useEffect, useRef, useState } from "react";
 import imgIcon from "../../assets/photo.png";
 import Layout from "../../components/Dashboard/Layout";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import Spinner from "../../components/Spinner";
+import AdminLayout from "../../components/Dashboard/Layout/adminlayout";
 
-const UserAddblog = () => {
+const UpdateBlogByAdmin = () => {
+  const { id } = useParams();
   const userInfo = localStorage.getItem("UserInformation");
   const userdata = JSON.parse(userInfo);
   let token = userdata?.token;
 
-  const navigative = useNavigate();
+  const [Loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+
   const [description, setDescription] = useState("");
   const [title, setTitle] = useState("");
 
   const [image, setImage] = useState([]);
-  const [file, setFiles] = useState("");
+  const [file, setFiles] = useState([]);
 
   const maxSize = 250 * 1024; // 250KB
 
@@ -60,11 +74,43 @@ const UserAddblog = () => {
     setImage(updatedImages);
   };
 
-  // -----------------------------------------------call--post-- api-----------------
-  const CreateBlog = async (BlogData) => {
+  // -----------------api-call-------------below----------
+
+  const getBlogData = async () => {
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_API}/api/v1/create-blogs`,
+      setLoading(true);
+      const res = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/get-single-blogs/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      setTitle(res?.data?.title);
+      setDescription(res?.data?.blogsDetails);
+      setImage(
+        res?.data?.images?.map(
+          (img) => `${process.env.REACT_APP_API}/${img.path}`
+        )
+      );
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  useEffect(() => {
+    getBlogData();
+  }, []);
+
+  const UpdateBlog = async (BlogData) => {
+    try {
+      const res = await axios.put(
+        `${process.env.REACT_APP_API}/api/v1/update-blogs/${id}`,
         BlogData,
         {
           headers: {
@@ -74,11 +120,11 @@ const UserAddblog = () => {
         }
       );
 
-      if (res.status === 201) {
+      if (res.status === 200) {
         toast.success(res?.data?.message);
         setTimeout(() => {
-          navigative("/user-bloglist");
-        }, 600);
+          navigate("/blogs");
+        }, 800);
       }
     } catch (error) {
       console.log(error);
@@ -96,15 +142,26 @@ const UserAddblog = () => {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("blogsDetails", description);
-    uniqueFiles.forEach((image, index) => {
+    uniqueFiles?.forEach((image) => {
       formData.append("files", image);
     });
 
-    await CreateBlog(formData);
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
+    }
+
+    try {
+      await UpdateBlog(formData);
+    } catch (error) {
+      console.error("Error updating blog:", error);
+    }
   };
 
+  if (Loading) {
+    return <Spinner />;
+  }
   return (
-    <Layout>
+    <AdminLayout>
       <ToastContainer />
       <div className="my-5">
         <div className="flex flex-wrap">
@@ -117,6 +174,7 @@ const UserAddblog = () => {
               <input
                 type="text"
                 value={title}
+                name="title"
                 onChange={(e) => setTitle(e.target.value)}
                 required
                 autoComplete="organization"
@@ -129,6 +187,7 @@ const UserAddblog = () => {
               <span className="font-semibold"> Description :</span>
               <textarea
                 value={description}
+                name="description"
                 onChange={(e) => setDescription(e.target.value)}
                 required
                 placeholder="Write your Post....."
@@ -144,7 +203,7 @@ const UserAddblog = () => {
                 <p className="text-white dark:text-gray-200"></p>
               ) : (
                 <div className="grid grid-cols-3 gap-4">
-                  {image.map((imageUrl, index) => (
+                  {image?.map((imageUrl, index) => (
                     <div key={index} className="relative pb-2">
                       <img
                         src={imageUrl}
@@ -152,6 +211,7 @@ const UserAddblog = () => {
                         alt={`Image ${index}`}
                       />
                       <button
+                        type="button"
                         onClick={() => handleImageDelete(index)}
                         className="absolute -top-4 right-0 w-5 h-5 flex items-center justify-center m-auto p-1 bg-red-500 text-white rounded-full"
                       >
@@ -165,10 +225,11 @@ const UserAddblog = () => {
             <div className="relative flex items-center justify-center mb-5 border-gray-300 rounded-full mx-auto w-20 h-20 sm:w-34 sm:h-34">
               <input
                 type="file"
-                className="hidden"
+                className="sr-only"
                 onChange={handleFileChange}
                 required
                 multiple
+                name="files"
                 id="fileInput"
                 autoComplete="organization"
                 placeholder="Your title Name"
@@ -184,15 +245,13 @@ const UserAddblog = () => {
               type="submit"
               className="flex items-center mx-auto justify-center px-8 py-4 font-sans font-semibold tracking-wide text-white bg-blue-500 rounded-md h-[40px] my-4"
             >
-              Post Blog
+              Update Blog
             </button>
           </form>
-
-          <div className="w-full xl:w-4/12 px-4">{/* <CardBarChart /> */}</div>
         </div>
       </div>
-    </Layout>
+    </AdminLayout>
   );
 };
 
-export default UserAddblog;
+export default UpdateBlogByAdmin;

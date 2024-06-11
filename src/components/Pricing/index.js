@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 export const planFeatured = [
   {
@@ -156,6 +156,7 @@ export const planFeatured = [
 ];
 
 const Pricing = ({ onSubmit, setPlan, prevStep }) => {
+  const [buttonClicked, setButtonClicked] = useState(false);
   return (
     //p-4 md:p-8
     <form onSubmit={onSubmit} className="">
@@ -218,8 +219,9 @@ const Pricing = ({ onSubmit, setPlan, prevStep }) => {
                 </ul>
                 <button
                   type="submit"
-                  onClick={() => setPlan(itm)}
-                  className="w-full font-bold gap-2 shadow uppercase p-2 bg-teal-500 hover:bg-green-300 text-white"
+                  // onClick={() => setPlan(itm)}
+                  onClick={() => {setPlan(itm);setButtonClicked(true);}}
+                  className={`w-full font-bold gap-2 shadow uppercase p-2 bg-teal-500 hover:bg-green-300 text-white ${buttonClicked ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                   Get Buy
                 </button>

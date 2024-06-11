@@ -104,6 +104,15 @@ import InactiveListing from "./pages/user/inactiveListing";
 import UserRole from "./pages/Admin/UserRole";
 import SuccessPage from "./pages/SuccessPage";
 import CancelPage from "./pages/CancelPage";
+import UserListingCount from "./pages/Admin/UserListingCount";
+import SeeReviews from "./components/Table/SeeReviews";
+import UpdateBlogByAdmin from "./pages/Admin/UpdateBlogByAdmin";
+import GoogleUserPage from "./pages/auth/GoogleUserPage";
+
+
+
+
+
 
 
 function App() {
@@ -117,6 +126,8 @@ function App() {
       <Route exact path="/" element={<Home />} />
       <Route exact path="/register" element={<Register />} />
       <Route exact path="/login" element={<Login />} />
+      <Route exact path="/google-login" element={<GoogleUserPage/>} />
+      
       <Route exact path="/verify/:id/:token" element={<EmailVerify />} />
       <Route exact path="/forget-password" element={<ForgetPassword />} />
       <Route exact path="/resetpassword/:token" element={<ChangePsd />} />
@@ -151,12 +162,12 @@ function App() {
         path="/view-more/EventMovies"
         element={<ViewMoreEventMovies />}
       />
-           <Route
+      <Route
         exact
         path="/success"
         element={<SuccessPage/>}
       />
-              <Route
+       <Route
         exact
         path="/cancel"
         element={<CancelPage/>}
@@ -329,29 +340,34 @@ function App() {
           </ProtectedRoute>
         }
       />
-      <Route
+   
+       <Route
         exact
-        path="/comments"
+        path="/view-user-listing/:id"
         element={
           <ProtectedRoute>
-            <Comments />
+          <UserListingCount/>
           </ProtectedRoute>
+          
         }
       />
+
       <Route
         exact
         path="/reviews-and-listing/:id"
         element={<ReviewsAndListing />}
       />
-      <Route
+   
+        <Route
         exact
-        path="/comments-view/:id"
+        path="/reviews-view/:id"
         element={
           <ProtectedRoute>
-            <CommentView />
+            <SeeReviews/>
           </ProtectedRoute>
         }
       />
+
       <Route
         exact
         path="/profile-details"
@@ -361,15 +377,7 @@ function App() {
           </ProtectedRoute>
         }
       />
-      <Route
-        exact
-        path="/blogs"
-        element={
-          <ProtectedRoute>
-            <Bloglist />
-          </ProtectedRoute>
-        }
-      />
+   
       <Route
         exact
         path="/add-blog"
@@ -379,15 +387,7 @@ function App() {
           </ProtectedRoute>
         }
       />
-      <Route
-        exact
-        path="/mails-alerts"
-        element={
-          <ProtectedRoute>
-            <MailsAlert />
-          </ProtectedRoute>
-        }
-      />
+    
       <Route
         exact
         path="/profile-setting"
@@ -523,19 +523,23 @@ function App() {
         path="/admin-profile-detail"
         element={<ProtectedAdmin Admindashboard={AdminProfileDetails} />}
       />
-            <Route
+       <Route
         exact
         path="/user-details/:id"
         element={<ProtectedAdmin Admindashboard={UserRole} />}
       />
 
 
-
+     <Route
+        exact
+        path="/mails-alerts"
+        element={<ProtectedAdmin Admindashboard={MailsAlert} />}
+      />
       <Route
         exact
         path="/Change-password-admin"
         element={<ProtectedAdmin Admindashboard={ChangepasswordAdmin} />}
-      />{" "}
+      />
       <Route
         exact
         path="/listing-ads-details/:id"
@@ -545,7 +549,30 @@ function App() {
         exact
         path="/listing-ads-update/:id"
         element={<ProtectedAdmin Admindashboard={Updatelistdata} />}
-      />{" "}
+      />
+        <Route
+        exact
+        path="/blogs"
+        element={<ProtectedAdmin Admindashboard={Bloglist} />}
+      />
+        <Route
+        exact
+        path="/comments"
+        element={<ProtectedAdmin Admindashboard={Comments} />}
+      />
+          <Route
+        exact
+        path="/comments-view/:id"
+        element={<ProtectedAdmin Admindashboard={CommentView} />}
+      />
+          <Route
+        exact
+        path="/blogs-edit/:id"
+        element={<ProtectedAdmin Admindashboard={UpdateBlogByAdmin} />}
+      />
+
+      
+
     </Routes>
   );
 }

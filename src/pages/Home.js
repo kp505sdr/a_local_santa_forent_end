@@ -112,8 +112,10 @@ const Home = () => {
   const [PopularEntrepreneurial, setPopularEntrepreneurial] = useState([]);
 
   useEffect(() => {
+   
     getAllBlogData();
     getAllListingData();
+  
   }, []);
   // --------------------------call-all-blogs-api----------------------------------
   const getAllBlogData = async () => {

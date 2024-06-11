@@ -1,94 +1,4 @@
-// import React, { useEffect, useState } from "react";
-// import AdminLayout from "../../components/Dashboard/Layout/adminlayout";
-// import Spinner from "../../components/Spinner";
-// import { useNavigate, useParams } from "react-router-dom";
-// import axios from "axios";
 
-// const Updatelistdata = () => {
-//   const { id } = useParams();
-
-//   const negative = useNavigate();
-//   const userInfo = localStorage.getItem("UserInformation");
-//   const userdata = JSON.parse(userInfo);
-//   let token = userdata?.token;
-
-//   const [loader, setLoader] = useState(false);
-//   const [listing, setListing] = useState({});
-
-//   console.log(listing);
-
-//   useEffect(() => {
-//     getListingData();
-//   }, [id]);
-
-//   const getListingData = async () => {
-//     try {
-//       setLoader(true);
-//       const res = await axios.get(
-//         `${process.env.REACT_APP_API}/api/v1/job/getsingle/${id}`,
-//         {
-//           headers: {
-//             Authorization: `Bearer ${token}`,
-//           },
-//         }
-//       );
-//       setListing(res?.data);
-//       setLoader(false);
-//     } catch (error) {
-//       console.error("Error fetching user data:", error);
-//       setLoader(false);
-//     }
-//   };
-
-//   const data = {};
-
-//   const updateListingData = async () => {
-//     try {
-//       setLoader(true);
-//       const res = await axios.put(
-//         `${process.env.REACT_APP_API}/api/v1/job/update/${id}`,
-//         data,
-//         {
-//           headers: {
-//             Authorization: `Bearer ${token}`,
-//           },
-//         }
-//       );
-//       setLoader(false);
-//       console.log("Update response:", res.data);
-//       return negative("/listing");
-//     } catch (error) {
-//       console.error("Error updating user data:", error);
-//       setLoader(false);
-//     }
-//   };
-
-//   if (loader) {
-//     return <Spinner />;
-//   }
-
-//   return (
-//     <AdminLayout>
-//       <p>Update data list</p>
-//       {listing?.images?.map((imagePath, index) => {
-//         return (
-//           <img
-//             key={index}
-//             src={`${process.env.REACT_APP_API}/${imagePath.replace(
-//               /\\/g,
-//               "/"
-//             )}`}
-//             alt={`Image ${index + 1}`}
-//             style={{ width: "200px", height: "200px", margin: "5px" }}
-//           />
-//         );
-//       })}
-//       <button onClick={updateListingData}>Update</button>
-//     </AdminLayout>
-//   );
-// };
-
-// export default Updatelistdata;
 
 import React, { useEffect, useState } from "react";
 import Layout1 from "../../components/Layout/Layout1";
@@ -342,7 +252,7 @@ const Updatelistdata = () => {
                         <span className="text-gray-900">{res?.category}</span>
                       </p>
                       <p className="text-sm">
-                        Subscrption :{" "}
+                        Subscription :{" "}
                         <span className="text-green-600">
                           {res?.subscrption}
                         </span>
@@ -379,7 +289,7 @@ const Updatelistdata = () => {
                           Update
                         </button>
                       </div>
-
+                      {res?.subscrption=="free" &&(
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">
                           Update subscrption
@@ -403,7 +313,7 @@ const Updatelistdata = () => {
                           Update
                         </button>
                       </div>
-                      
+                      )}
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">
                           Update Expiry Date
@@ -610,17 +520,22 @@ const Updatelistdata = () => {
                       </p>
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">Update Status</p>
+                     
                         <select
                           onChange={(e) => setChangeStatus(e.target.value)}
                           id="status"
                           name="status"
                           className="w-1/2 h-7 border border-sky-500 focus:outline-none focus:border-sky-500 rounded px-2 md:px-3 py-0 md:py-0.5 tracking-wider"
                         >
+                         
+                  
                           <option value="">Select</option>
                           <option value="active">Active</option>
                           <option value="pending">Pending</option>
                           <option value="inactive">InActive</option>
+                       
                         </select>
+                        
                         <button
                           onClick={() => UpdatedStatus(res._id)}
                           className="p-1 text-white bg-blue-500 rounded-sm text-sm ml-2"
@@ -628,11 +543,14 @@ const Updatelistdata = () => {
                           Update
                         </button>
                       </div>
-
+                      {res?.subscrption=="free" &&(
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">
                           Update subscrption
                         </p>
+                      
+                          
+                     
                         <select
                           onChange={(e) => setSubscrption(e.target.value)}
                           id="status"
@@ -645,6 +563,7 @@ const Updatelistdata = () => {
                           <option value="premium">Premium</option>
                           <option value="premiumpluse">Premium Pluse</option>
                         </select>
+                         
                         <button
                           onClick={() => UpdatedStatus(res._id)}
                           className="p-1 text-white bg-blue-500 rounded-sm text-sm ml-2"
@@ -652,7 +571,7 @@ const Updatelistdata = () => {
                           Update
                         </button>
                       </div>
-                      
+                        )}
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">
                           Update Expiry Date

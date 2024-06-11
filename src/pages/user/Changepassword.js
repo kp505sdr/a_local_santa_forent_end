@@ -7,6 +7,7 @@ const Changepassword = () => {
   const [oldPassword, setoldPassword] = useState();
   const [newPassword, setnewPassword] = useState();
   const [cnfNewPass, setcnfNewPass] = useState();
+  const [message, setMessage] = useState("")
 
   const [errapiRes, setErrApiRes] = useState();
   const [apiRes, setApiRes] = useState();
@@ -39,15 +40,24 @@ const Changepassword = () => {
   };
   const changepass = {
     oldPassword,
-    newPassword,
+    newPassword
   };
+ 
   const HandeleSubmit = async (e) => {
-    setloader(true);
     e.preventDefault();
-    changePassFun(changepass);
-    setoldPassword("");
-    setnewPassword("");
-    setcnfNewPass("");
+
+    if (newPassword !== cnfNewPass) {
+      setMessage("New password and confirm password do not match");
+      return;
+    }
+      setloader(true);
+      changePassFun(changepass);
+       setoldPassword("");
+        setnewPassword("");
+        setcnfNewPass("");
+   
+
+ 
   };
 
   return (
@@ -65,10 +75,15 @@ const Changepassword = () => {
                 <p className="text-red-600 font-semibold">
                   {errapiRes?.response?.data}
                 </p>
+                <p className="text-red-600 font-semibold">
+                  {message}
+                </p>
+                
                 <p className="text-green-600 font-semibold"> {apiRes?.data}</p>
                 <p className="text-blue-600 font-semibold">
                   {loader ? "Please Wait..." : ""}
                 </p>
+
               </div>
 
               <form

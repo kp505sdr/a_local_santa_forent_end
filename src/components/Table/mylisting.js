@@ -19,6 +19,9 @@ const MylistingTable = ({ myListingData }) => {
         <table className="min-w-full">
           <thead>
             <tr>
+            <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
+                Order Id
+              </th>
               <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
                 Title
               </th>
@@ -38,9 +41,14 @@ const MylistingTable = ({ myListingData }) => {
               <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
               SubCategory
               </th>
-              
+              <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
+              Amount
+              </th>
               <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
               subscription
+              </th>
+              <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
+              Transaction Id
               </th>
               <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
                 Start Date
@@ -56,6 +64,9 @@ const MylistingTable = ({ myListingData }) => {
           <tbody className="bg-white">
             {myListingData?.map((res, i) => (
               <tr key={i} className="border-b border-gray-500 ">
+                  <td className="px-6 py-3 whitespace-nowrap text-gray-800 border-gray-500 text-sm leading-5">
+                  {res?._id}
+                </td>
                 <td className="px-6 py-3 whitespace-nowrap text-blue-900 border-gray-500 text-sm leading-5">
                   {res?.title}
                 </td>
@@ -86,6 +97,11 @@ const MylistingTable = ({ myListingData }) => {
                 >
                   {res?.subCategory}
                 </td>
+                <td
+                  className={` px-6 text-center font-semibold whitespace-nowrap text-blue-700 border-gray-500 text-sm leading-5`}
+                >
+                  ${res?.price}
+                </td>
                 
                 <td className="px-6 whitespace-nowrap text-blue-900 border-gray-500 text-sm leading-5">
                   <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
@@ -95,6 +111,9 @@ const MylistingTable = ({ myListingData }) => {
                     />
                     <span className="relative text-xs">{res?.subscrption}</span>
                   </span>
+                </td>
+                <td className="px-6 whitespace-nowrap text-gray-800 border-gray-500 text-center text-sm leading-5">
+                 {res?.txnId?res.txnId:"Null"}
                 </td>
                 <td className="px-6 whitespace-nowrap text-green-900 border-gray-500 text-sm leading-5">
                  {dateFormat(res.subscription==="free"?res.createdAt:res.paymentDate , " mmmm d , yyyy")}

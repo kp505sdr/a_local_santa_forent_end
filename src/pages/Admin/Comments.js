@@ -17,7 +17,7 @@ useEffect(()=>{
      
       setAllAds(res?.data)
     } catch (error) {
-      
+      console.log(error)
     }
   }
 

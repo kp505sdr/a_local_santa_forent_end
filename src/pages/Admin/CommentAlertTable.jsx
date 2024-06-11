@@ -1,9 +1,10 @@
+
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-const CommentTable = ({allAds}) => {
+const CommentAlertTable = ({allAds}) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const listingsPerPage = 8; // Adjust this value as needed
+  const listingsPerPage = 4; // Adjust this value as needed
 
   const indexOfLastListing = currentPage * listingsPerPage;
   const indexOfFirstListing = indexOfLastListing - listingsPerPage;
@@ -18,9 +19,13 @@ const CommentTable = ({allAds}) => {
   return (
     <div className="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-8">
       <div className="align-middle rounded-tl-lg rounded-tr-lg inline-block w-full overflow-hidden px-2 py-3">
-        <div className="flex justify-between items-center">
-          <div className=""> All Comments</div>
-        </div>
+        <div className="flex item-center">
+             <p>New Comment </p>
+             {currentListings?.map((res)=>{
+                console.log("checking",res)
+             })}
+              <p className="ml-4 mt-1 text-center h-5 w-5 bg-red-600 rounded-full text-white">{allAds?.length}</p>
+             </div>
       </div>
       <div className="align-middle inline-block min-w-full shadow overflow-hidden  shadow-dashboard rounded-bl-lg rounded-br-lg">
         <table className="min-w-full">
@@ -41,9 +46,6 @@ const CommentTable = ({allAds}) => {
               </th>
               <th className="px-6 py-3 text-left text-xs md:text-sm leading-4 tracking-wider">
                 Details
-              </th>
-              <th className="px-6 py-3 text-left text-xs md:text-sm leading-4 tracking-wider">
-                Action
               </th>
             </tr>
           </thead>
@@ -70,21 +72,11 @@ const CommentTable = ({allAds}) => {
              <td className="px-6 whitespace-nowrap text-blue-900 border-gray-500 text-xs md:text-sm leading-5">
                <Link
                  to={`/comments-view/${res?._id}`}
-                 className="bg-orange-500 px-2 py-1 rounded-md text-white"
+                 className="bg-yellow-300 px-2 py-1 rounded-md text-white"
                >
                  View
                </Link>
              </td>
-             <td className="px-6 whitespace-nowrap text-blue-900 border-gray-500 text-xs md:text-sm leading-5">
-               <Link
-                 to={`/listing-ads-update/${res?._id}`}
-                 className="bg-blue-600 text-white px-2 py-1 rounded-md text-white"
-               >
-                 Click
-               </Link>
-             </td>
-
-            
          
            </tr>
          ))}
@@ -148,4 +140,4 @@ const CommentTable = ({allAds}) => {
   );
 };
 
-export default CommentTable;
+export default CommentAlertTable;

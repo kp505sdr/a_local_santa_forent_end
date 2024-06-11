@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Input from "../../components/inputfield";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,57 +11,6 @@ import Layout1 from "../../components/Layout/Layout1";
 const Register = () => {
   let navigate = useNavigate();
   const { register, handleSubmit } = useForm();
-
-  // ----------for fixed cors error----Start---------
-  // useEffect(() => {
-  //   function start() {
-  //     gapi.client.init({
-  //       clientId: process.env.googleId_clientId, // The client ID you obtained from Google Developer Console
-  //       scope: "email",
-  //     });
-  //   }
-
-  //   gapi.load("client:auth2", start);
-  // }, []);
-  // //----------- for fixed cors error----End------------
-
-  // //---------gooogle response here after login success---------Start----------
-  // const responseGoogle = async (response) => {
-  //   //you will get user data in response after google login success or Failure
-
-  //   const userData = {
-  //     email: response.profileObj.email,
-  //     name: response.profileObj.name,
-  //     imageUrl: response.profileObj.imageUrl,
-  //     familyName: response.profileObj.familyName,
-  //     googleId: response.googleId,
-  //     tokenId: response.tokenId,
-  //   };
-
-  //   console.log("sign with google data ===>", userData);
-  //   //   ---------------------below sample data for data handling-----------------------------------
-  //   try {
-  //     const response = await axios.post(
-  //       `${process.env.REACT_APP_API}/api/v1/user/google/login`,
-  //       { userData }
-  //     );
-
-  //     const token = response.data?.token;
-  //     const email = response.data?.user?.email;
-  //     const profilepic = response.data?.user?.profilepic;
-  //     const name = response.data?.user?.name;
-
-  //     localStorage.setItem("token", token);
-  //     localStorage.setItem("profilepic", profilepic);
-  //     localStorage.setItem("name", name);
-  //     localStorage.setItem("email", email);
-  //     toast.success("Logged in successfully with Google.");
-  //     navigate("/");
-  //   } catch (error) {
-  //     console.error(error);
-  //     toast.error("Something Went Wrong");
-  //   }
-  // };
 
   const onSubmit = async (data) => {
     try {
@@ -85,6 +34,14 @@ const Register = () => {
       toast.error(error?.response?.data?.message);
     }
   };
+
+  // -----------------------google-login-fun--------------------------------
+    const handleGoogleLogin = async() => {
+      window.location.href =`${process.env.REACT_APP_API}/api/v1/auth/login`;
+
+};
+// -------------------------google-login-success-fun---------------------------------------
+
   return (
     <Layout1 title="Login">
       <ToastContainer />
@@ -165,7 +122,7 @@ const Register = () => {
                 loading="lazy"
                 alt="google logo"
               />
-              <span>Login with Google</span>
+              <span onClick={handleGoogleLogin}>Login with Google</span>
             </button>
           </div>
         </div>

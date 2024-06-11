@@ -9,9 +9,7 @@ import Layout1 from "../../components/Layout/Layout1";
 
 const Reviewsdetails = () => {
 
-  const userInfo = localStorage.getItem("UserInformation");
-  const userdata = JSON.parse(userInfo);
-  let token=userdata?.token
+
   const [getReviwes,setGetReviwes]=useState()
   let {id}=useParams()
     
@@ -21,16 +19,6 @@ const Reviewsdetails = () => {
   
   const getAllJobData = async () => {
     try {
-  //  if(token){
-  //   const res = await axios.get(`${process.env.REACT_APP_API}/api/v1/job/get-allSelf-listing`, {
-  //     headers: {
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   });
-   
-  //   const filterdData=res?.data?.filter(item => item._id==id)
-  //   setGetReviwes(filterdData)
-  //  }
     const res = await axios.get(`${process.env.REACT_APP_API}/api/v1/job/get`);
    
     const filterdData=res?.data?.filter(item => item._id==id)

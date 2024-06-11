@@ -14,13 +14,6 @@ const Userdashboard = () => {
 
 
 
-  useEffect(() => {
- 
-    if(!userdata?.token){
-      navigate("/")
-    }
-    getAllJobData();
-  }, [token]);
 
 
 // ------------------------------------api---------------------------------------------
@@ -46,6 +39,16 @@ const getAllJobData = async () => {
 
 
 
+// --------------------useEffect---------------------------------------
+
+useEffect(() => {
+ 
+  
+  if(!userdata?.token){
+    navigate("/")
+  }
+  getAllJobData();
+}, [token]);
 
 
   return (

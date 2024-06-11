@@ -21,6 +21,8 @@ const PostAnAdvertise = () => {
   const userInfo = localStorage.getItem("UserInformation");
   const userdata = JSON.parse(userInfo);
   let token = userdata?.token;
+  let isAdmin=userdata?.user.isAdmin
+
   const negative = useNavigate();
   const {
     isModalOpen,
@@ -79,7 +81,7 @@ const PostAnAdvertise = () => {
   const [contactEmail, setContactEmail] = useState("");
   const [contactAddress, setContactAddress] = useState("");
   const [url, setUrl] = useState("");
-
+  
   const [tags, setTags] = useState([]);
   const [youTubetags, setYouTubeTags] = useState([]);
   const [inputTag, setInputTag] = useState("");
@@ -171,7 +173,7 @@ const PostAnAdvertise = () => {
     
       ) {
         setStep((prevStep) => prevStep + 1);
-        console.log("work step => 1");
+       
       } else {
         toast.error("Please fill in all fields to post an advertisement.", {
           position: "top-center",
@@ -260,7 +262,27 @@ const PostAnAdvertise = () => {
         qty:1,
       }]
 
-  
+
+      if (postData?.subscrption=="free" && isAdmin==true) {
+        toast("Created Successfully!");
+        setTimeout(() => {
+          navigate("/listing")
+        }, 1000);
+      } else {
+
+        toast.error(res?.data?.message);
+      }
+
+      if (postData?.subscrption=="free" && isAdmin==false) {
+        toast("Created Successfully!");
+        setTimeout(() => {
+          navigate("/my-listing")
+        }, 1000);
+      } else {
+    
+        toast.error(res?.data?.message);
+      }
+
      if(postData?.subscrption !=="free"){
       MakePayment(mydata)
 

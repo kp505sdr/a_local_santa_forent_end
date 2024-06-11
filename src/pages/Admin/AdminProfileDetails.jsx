@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import AdminLayout from '../../components/Dashboard/Layout/adminlayout';
 import Profilecard from '../../components/Dashboard/Profile';
 import axios from 'axios';
+import AdminIndex from '../../components/Dashboard/Profile/AdminIndex';
 
 
 const AdminProfileDetails = () => {
@@ -34,7 +35,7 @@ const AdminProfileDetails = () => {
      <div className="my-5">
        <div className="flex flex-col w-full">
          <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-0 sm:px-4">
-           <Profilecard userData={userData}/>
+           <AdminIndex userData={userData}/>
          </div>
        </div>
      </div>

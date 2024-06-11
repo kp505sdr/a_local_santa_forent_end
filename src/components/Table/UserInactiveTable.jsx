@@ -56,7 +56,7 @@ const UserInactiveTable = ({pendingData}) => {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   // --------------end------------------------------------
-
+console.log("inactive data",currentListings)
   const path = useLocation();
   return (
     <>
@@ -89,111 +89,123 @@ const UserInactiveTable = ({pendingData}) => {
             </div>
           </div>
         </div>
-        <div className="">
-          <table className="">
-            <thead className="bg-gray-800">
-              <tr>
-                <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
-                  ID
-                </th>
-                <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
-                  Title
-                </th>
-                <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
-                  Status
-                </th>
-                <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
-                  Views
-                </th>
-
-                <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
-                  Category
-                </th>
-                <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
-                  City
-                </th>
-                <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
-                  SubCategory
-                </th>
-
-                <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
-                  Subscrption
-                </th>
-                <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
-                  Start Date
-                </th>
-                <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
-                  End Date
-                </th>
-                <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
-                  Action
-                </th>
-              </tr>
-            </thead>
+        <div className="align-middle inline-block min-w-full shadow overflow-hidden bg-gray-900 shadow-dashboard">
+        <table className="min-w-full">
+          <thead>
+            <tr>
+            <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
+                Order Id
+              </th>
+              <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
+                Title
+              </th>
+              <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
+                Status
+              </th>
+              <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
+                Views
+              </th>
+          
+              <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
+              Category
+              </th>
+              <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
+              City
+              </th>
+              <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
+              SubCategory
+              </th>
+              <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
+              Amount
+              </th>
+              <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
+              subscription
+              </th>
+              <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
+              Transaction Id
+              </th>
+              <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
+                Start Date
+              </th>
+              <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
+                End Date
+              </th>
+              <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
+                Action
+              </th>
+            </tr>
+          </thead>
 
             <tbody className="bg-white">
               <p className="text-blue-500 font-semibold">
                 {loader ? "Loading..." : ""}
               </p>
               {currentListings?.map((res, i) => (
-                <tr key={i} className="border-b border-gray-500 ">
-                  <td className="px-6 py-3 whitespace-nowrap text-blue-900 border-gray-500 text-sm leading-5">
-                    {i + 1}
-                  </td>
-                  <td className="px-6 py-3 whitespace-nowrap text-blue-900 border-gray-500 text-sm leading-5">
-                    {res?.title}
-                  </td>
-                  <td
-                    className={`px-6 whitespace-nowrap text-blue-900 ${
-                      res.status == "active" ? "text-green-900" : "text-red-900"
-                    } border-gray-500 text-sm leading-5`}
-                  >
-                    {res?.status}
-                  </td>
-                  <td
-                    className={` px-6 text-center whitespace-nowrap text-blue-900 border-gray-500 text-sm leading-5`}
-                  >
-                    {res?.views}
-                  </td>
-                  <td
-                    className={` px-6 text-center whitespace-nowrap text-blue-900 border-gray-500 text-sm leading-5`}
-                  >
-                    {res?.category}
-                  </td>
-                  <td
-                    className={` px-6 text-center whitespace-nowrap text-blue-900 border-gray-500 text-sm leading-5`}
-                  >
-                    {res?.city}
-                  </td>
-                  <td
-                    className={` px-6 text-center whitespace-nowrap text-blue-900 border-gray-500 text-sm leading-5`}
-                  >
-                    {res?.subCategory}
-                  </td>
-
-                  <td className="px-6 whitespace-nowrap text-blue-900 border-gray-500 text-sm leading-5">
-                    <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                      <span
-                        aria-hidden
-                        className="absolute inset-0 bg-green-200 opacity-50 rounded-sm"
-                      />
-                      <span className="relative text-xs">
-                        {res?.subscrption}
-                      </span>
-                    </span>
-                  </td>
-                  <td className="px-6 whitespace-nowrap text-green-900 border-gray-500 text-sm leading-5">
-                    {dateFormat(res?.createdAt, " mmmm d , yyyy")}
-                  </td>
-                  <td className="px-6 whitespace-nowrap text-red-900 border-gray-500 text-sm leading-5">
-                    {dateFormat(res?.expDate, " mmmm d , yyyy")}
-                  </td>
-                  <td className="px-6 text-center whitespace-nowrap text-blue-900 border-gray-500 text-sm leading-5 cursor-pointer hover:bg-blue-100 ">
-                    <Link to={`/reviews-and-listing/${res?._id}`}>
-                      <span className="text-blue-600 font-semibold">Click</span>
-                    </Link>
-                  </td>
-                </tr>
+                        <tr key={i} className="border-b border-gray-500 ">
+                        <td className="px-6 py-3 whitespace-nowrap text-gray-800 border-gray-500 text-sm leading-5">
+                        {res?._id}
+                      </td>
+                      <td className="px-6 py-3 whitespace-nowrap text-blue-900 border-gray-500 text-sm leading-5">
+                        {res?.title}
+                      </td>
+                      <td
+                        className={`px-6 whitespace-nowrap text-blue-900 ${
+                          res.status == "active"? "text-green-900" : "text-red-900"
+                        } border-gray-500 text-sm leading-5`}
+                      >
+                        {res?.status}
+                      </td>
+                      <td
+                        className={` px-6 text-center whitespace-nowrap text-blue-900 border-gray-500 text-sm leading-5`}
+                      >
+                        {res?.views}
+                      </td>
+                      <td
+                        className={` px-6 text-center whitespace-nowrap text-blue-900 border-gray-500 text-sm leading-5`}
+                      >
+                        {res?.category}
+                      </td>
+                      <td
+                        className={` px-6 text-center whitespace-nowrap text-blue-900 border-gray-500 text-sm leading-5`}
+                      >
+                        {res?.city}
+                      </td>
+                      <td
+                        className={` px-6 text-center whitespace-nowrap text-blue-900 border-gray-500 text-sm leading-5`}
+                      >
+                        {res?.subCategory}
+                      </td>
+                      <td
+                        className={` px-6 text-center font-semibold whitespace-nowrap text-blue-700 border-gray-500 text-sm leading-5`}
+                      >
+                        ${res?.price}
+                      </td>
+                      
+                      <td className="px-6 whitespace-nowrap text-blue-900 border-gray-500 text-sm leading-5">
+                        <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                          <span
+                            aria-hidden
+                            className="absolute inset-0 bg-green-200 opacity-50 rounded-sm"
+                          />
+                          <span className="relative text-xs">{res?.subscrption}</span>
+                        </span>
+                      </td>
+                      <td className="px-6 whitespace-nowrap text-gray-800 border-gray-500 text-center text-sm leading-5">
+                       {res?.txnId?res.txnId:"Null"}
+                      </td>
+                      <td className="px-6 whitespace-nowrap text-green-900 border-gray-500 text-sm leading-5">
+                       {dateFormat(res.subscription==="free"?res.createdAt:res.paymentDate , " mmmm d , yyyy")}
+                      </td>
+                      <td className="px-6 whitespace-nowrap text-red-900 border-gray-500 text-sm leading-5">
+                      {dateFormat(res?.expDate, " mmmm d , yyyy")}
+                        
+                      </td>
+                      <td className="px-6 text-center whitespace-nowrap text-blue-900 border-gray-500 text-sm leading-5 cursor-pointer hover:bg-blue-100 ">
+                        <Link to={`/reviews-and-listing/${res?._id}`}>
+                          <span className="text-blue-600 font-semibold">Click</span>
+                        </Link>
+                      </td>
+                    </tr>
               ))}
             </tbody>
           </table>

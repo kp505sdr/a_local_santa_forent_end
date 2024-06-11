@@ -13,6 +13,9 @@ const Admindashboard = () => {
   const [allListing, setAllListing] = useState();
   const [newListing, setnewListing] = useState();
   const [allBlog, setAllBlog] = useState();
+  const [allComment, setAllComment] = useState();
+  const [allReviews, setallReviews] = useState();
+  
   
   const [allUser, setallUser] = useState();
   useEffect(() => {
@@ -32,11 +35,34 @@ const Admindashboard = () => {
 
       const newData=res?.data?.filter(item => item?.newAds==true)
       setnewListing(newData)
+// -------------------------all comment------------------------------------
+      const allComment=res?.data?.filter(item => item?.comments?.length)
+      const countComent=allComment?.map((res)=>{
+        return res.comments.length
+      })
+      let sum=0
+      countComent?.forEach(element => {
+        sum+=element
+      });
+      setAllComment(sum)
+
+      // ----------------------------all-reviews------------------------------------
+      const AllReviews=res?.data?.filter(item => item?.reviews?.length)
+      const countReviews=AllReviews?.map((res)=>{
+        return res.reviews.length
+      })
+      let sum1=0
+      countReviews?.forEach(element => {
+        sum1+=element
+      });
+      setallReviews(sum1)
     } catch (error) {
       console.error("Error fetching user data:", error);
       setLoader(false);
     }
   };
+
+
 
   // -----------------total-user--------------------
   const getAllUser = async () => {
@@ -103,7 +129,7 @@ const Admindashboard = () => {
       <div className="my-5">
         <div className="flex flex-col w-full">
           <div className="w-full mb-12 xl:mb-0 px-2 sm:px-0">
-            <AdminHeaderStats allListing={allListing} allUser={allUser} newListing={newListing} allBlog={allBlog} loader={loader}/>
+            <AdminHeaderStats allListing={allListing} allUser={allUser} newListing={newListing} allBlog={allBlog}allComment={allComment} allReviews={allReviews} loader={loader}/>
             <p className="text-blue-600 p-2 font-semibold">
               {loader ? "Loading..." : ""}
             </p>

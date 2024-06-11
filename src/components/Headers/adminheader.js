@@ -10,8 +10,8 @@ import Reviews from "../../assets/icon/Reviews -  alocalsanta.com.png";
 import SponseredAds from "../../assets/icon/Sponsered Ads -alocalsanta.com.png";
 import MailsAlert from "../../assets/icon/alert-50.png";
 
-export default function AdminHeaderStats({ allListing, allUser,newListing,allBlog,loader}) {
-  
+export default function AdminHeaderStats({ allListing, allUser,newListing,allBlog,allComment,allReviews,loader}) {
+   
   return (
     <>
       {/* Header */}
@@ -36,9 +36,9 @@ export default function AdminHeaderStats({ allListing, allUser,newListing,allBlo
               </Link>
               <Link to="/comments">
                 <div className="w-full sm:px-4">
-                  <CardStats
+                  <CardStats 
                     statSubtitle="Comments"
-                    statTitle="2,356"
+                    statTitle={loader?<b className="text-blue-600 p-1 text-xs">Loading...</b>:allComment}
                     statArrow="down"
                     statPercent="3.48"
                     statPercentColor="text-red-500"
@@ -50,9 +50,9 @@ export default function AdminHeaderStats({ allListing, allUser,newListing,allBlo
               </Link>
               <Link to="/admin-reviews">
                 <div className="w-full sm:px-4">
-                  <CardStats
+                  <CardStats 
                     statSubtitle="Reviews"
-                    statTitle="2,356"
+                    statTitle={loader?<b className="text-blue-600 p-1 text-xs">Loading...</b>:allReviews}
                     statArrow="down"
                     statPercent="3.48"
                     statPercentColor="text-red-500"

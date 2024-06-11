@@ -8,6 +8,7 @@ import { Link, useParams } from 'react-router-dom';
 
 
 const UserRole = () => {
+ 
     const [ChangeStatus, setChangeStatus] = useState();
     const userInfo = localStorage.getItem("UserInformation");
     const userdata = JSON.parse(userInfo);
@@ -112,9 +113,12 @@ const UpdatedStatus=async(id)=>{
                    </div>
                    
                  </div>
-                 <p>Role :- <span className='font-semibold text-blue-500'> {res.isAdmin?"Admin":"User"} </span></p>
+                 <p>Role : <span className='font-semibold text-blue-500'> {res.isAdmin?"Admin":"User"} </span></p>
                  <p className="">
-                       Total Listing :- <span className='font-semibold text-red-500'>{allSelfListing?.length}</span>
+                       Total Listing : <span className='font-semibold text-red-500'>{allSelfListing?.length}</span>
+                       <Link to={`/view-user-listing/${id}`}>
+                       <span className='mx-2 text-sm bg-blue-600 text-white rounded-md px-1'>Details</span>
+                       </Link>
                      </p>
                </div>
                <div className="space-y-3 lg:px-2 lg:space-y-2">

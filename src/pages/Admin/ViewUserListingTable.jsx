@@ -1,8 +1,9 @@
 
+
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import dateFormat from "dateformat";
-const AdminAlertTable = ({ allListing }) => {
+const ViewUserListingTable = ({ allListing }) => {
 
 
   const userInfo = localStorage.getItem("UserInformation");
@@ -11,7 +12,7 @@ const AdminAlertTable = ({ allListing }) => {
  
 
   const [currentPage, setCurrentPage] = useState(1);
-  const listingsPerPage = 4; // Adjust this value as needed
+  const listingsPerPage = 10; // Adjust this value as needed
 
   const indexOfLastListing = currentPage * listingsPerPage;
   const indexOfFirstListing = indexOfLastListing - listingsPerPage;
@@ -33,7 +34,7 @@ const AdminAlertTable = ({ allListing }) => {
         <div className="align-middle rounded-tl-lg rounded-tr-lg inline-block w-full overflow-hidden px-2 py-3">
           <div className="flex justify-between items-center">
              <div className="flex justify-center item-center">
-             <p>New Listing </p>
+             <p>Created Listing </p>
               <p className="ml-4 mt-1 text-center h-5 w-5 bg-red-600 rounded-full text-white">{allListing?.length}</p>
              </div>
             {/* <div className="flex gap-x-2">
@@ -254,4 +255,4 @@ const AdminAlertTable = ({ allListing }) => {
   );
 };
 
-export default AdminAlertTable;
+export default ViewUserListingTable;
