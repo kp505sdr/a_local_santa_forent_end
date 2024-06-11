@@ -3,11 +3,13 @@ import imgIcon from "../../assets/photo.png";
 import AdminLayout from "../../components/Dashboard/Layout/adminlayout";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Addblog = () => {
   const userInfo = localStorage.getItem("UserInformation");
   const userdata = JSON.parse(userInfo);
   let token = userdata?.token;
+  const navigate = useNavigate();
 
   const [description, setDescription] = useState("");
   const [title, setTitle] = useState("");
@@ -79,7 +81,7 @@ const Addblog = () => {
       if (res.status === 201) {
         toast.success(res?.data?.message);
         setTimeout(() => {
-          // navigative("/user-bloglist");
+          navigate("/blogs");
         }, 600);
       }
     } catch (error) {

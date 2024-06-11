@@ -5,6 +5,14 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import dateFormat from "dateformat";
 
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
+// import required modules
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
+
 const BlogsDetails = () => {
   const { id } = useParams();
   const [blogData, setBlogData] = useState();
@@ -26,17 +34,35 @@ const BlogsDetails = () => {
   };
 
   return (
-    <Layout1>
-      <div className="lg:flex justify-between items-start">
+    <Layout1 title="blog-details">
+      <div className="lg:flex justify-between items-start sm:my-10 w-11/12 mx-auto">
         <div className="mt-1 lg:w-1/2 flex justify-center">
-          <img
-            src={
-              blogData?.images[0]?.path
-                ? `${process.env.REACT_APP_API}/${blogData?.images[0]?.path}`
-                : "https://res.cloudinary.com/dkmsgd3ua/image/upload/v1710358388/hym2mguczixkumd5u5vs.webp"
-            }
-            className="p-2 h-92"
-          />
+          <Swiper
+            spaceBetween={30}
+            centeredSlides={true}
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: false,
+            }}
+            pagination={{
+              clickable: true,
+            }}
+            modules={[Autoplay, Pagination, Navigation]}
+            className=" flex justify-center items-center h-96"
+          >
+            {blogData?.images.map((itm, idx) => (
+              <SwiperSlide key={idx}>
+                <img
+                  src={
+                    itm?.path
+                      ? `${process.env.REACT_APP_API}/${itm?.path}`
+                      : "https://res.cloudinary.com/dkmsgd3ua/image/upload/v1710358388/hym2mguczixkumd5u5vs.webp"
+                  }
+                  className="p-2 object-contain"
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
         <div className="lg:mt-3 md:w-[50%]">
           <div className="flex justify-between items-center pb-2 bg-gray-100 rounded-sm md:p-2">
@@ -60,7 +86,7 @@ const BlogsDetails = () => {
             </div>
           </div>
           <p className="mx-1 text-xs p-2">
-            Posted Date:-{" "}
+            Posted Date :{" "}
             <i className="text-gray-600 font-semibold">
               {dateFormat(blogData?.timestamp, " mmmm dS, yyyy")}
             </i>

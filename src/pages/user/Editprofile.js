@@ -4,87 +4,83 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Editprofile = () => {
-  const [profilePic,setProfilePic]=useState()
-  const [dbProfilePic,setDbProfilePic]=useState()
-  const [name,setName]=useState()
-  const [mobile,setMobile]=useState()
-  const [gender,setGender]=useState()
-  const [facebook,setfacebook]=useState()
-  const [youtube,setyoutube]=useState()
-  const [linkedin,setlinkedin]=useState()
-  const [x,setX]=useState()
-  const [userProfile,setUserProfile]=useState()
-  
+  const [profilePic, setProfilePic] = useState([]);
+  const [dbProfilePic, setDbProfilePic] = useState();
+  const [name, setName] = useState();
+  const [mobile, setMobile] = useState();
+  const [gender, setGender] = useState();
+  const [facebook, setfacebook] = useState();
+  const [youtube, setyoutube] = useState();
+  const [linkedin, setlinkedin] = useState();
+  const [x, setX] = useState();
+
   const userInfo = localStorage.getItem("UserInformation");
   const userdata = JSON.parse(userInfo);
-  let token=userdata?.token
-  const Navigate=useNavigate()
-// -----------------call---api---------------------------
+  let token = userdata?.token;
+  const Navigate = useNavigate();
+  // -----------------call---api---------------------------
 
+  useEffect(() => {
+    getUserData();
+  }, [token]);
 
-useEffect(() => {
-  getUserData();
-}, [token]);
+  const getUserData = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/getsingle/user`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-const getUserData = async () => {
-  try {
-    const res = await axios.get(`${process.env.REACT_APP_API}/api/v1/getsingle/user`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-     
-    });
-    console.log(res?.data)
-    setDbProfilePic(res?.data?.profilepic)
-    setName(res?.data?.name)
-    setMobile(res?.data?.mobile)
-    setGender(res?.data?.gender)
-    setfacebook(res?.data?.socialMedia?.facebook)
-    setyoutube(res?.data?.socialMedia?.youtube)
-    setlinkedin(res?.data?.socialMedia?.linkedin)
-    setX(res?.data?.socialMedia?.x)
-  
-   
-  } catch (error) {
-    console.error("Error fetching user data:", error);
-   
-  }}
-
-
-// -----------------------------update----------------------------------------
-const UpdateUserData = async (updatedData) => {
-  try {
-    const res = await axios.put(`${process.env.REACT_APP_API}/api/v1/update/user/profile`,{updatedData},{
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-     
-    });
-   
-  } catch (error) {
-    console.error("Error fetching user data:", error);
-   
-  }}
-
-  let updatedData={
-    profilePic:profilePic,
-    name:name,
-    mobile:mobile,
-    gender:gender,
-    socialMedia:{
-      facebook:facebook,
-      youtube:youtube,
-      linkedin:linkedin,
-      x:x
+      setDbProfilePic(`${process.env.REACT_APP_API}/${res?.data?.profilePic}`);
+      setName(res?.data?.name);
+      setMobile(res?.data?.mobile);
+      setGender(res?.data?.gender);
+      setfacebook(res?.data?.socialMedia?.facebook);
+      setyoutube(res?.data?.socialMedia?.youtube);
+      setlinkedin(res?.data?.socialMedia?.linkedin);
+      setX(res?.data?.socialMedia?.x);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
     }
-  }
+  };
 
-  const HandleSubmit=async(e)=>{
-    e.preventDefault()
-   
-    UpdateUserData(updatedData)
-    Navigate("/profile-details")
-  }
+  // -----------------------------update----------------------------------------
+  const UpdateUserData = async (updatedData) => {
+    try {
+      const res = await axios.put(
+        `${process.env.REACT_APP_API}/api/v1/update/user/profile`,
+        updatedData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  const HandleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("mobile", mobile);
+    formData.append("gender", gender);
+    formData.append("facebook", facebook);
+    formData.append("youtube", youtube);
+    formData.append("linkedin", linkedin);
+    formData.append("x", x);
+    formData.append("profilePic", profilePic);
+
+    UpdateUserData(formData);
+    Navigate("/profile-details");
+  };
   return (
     <Layout>
       <div className="my-5">
@@ -96,7 +92,12 @@ const UpdateUserData = async (updatedData) => {
               <div className="text-2xl py-4 px-6 text-center font-bold uppercase">
                 Profile
               </div>
-              <form onSubmit={HandleSubmit} className="py-4 px-6" action method="POST">
+              <form
+                onSubmit={HandleSubmit}
+                className="py-4 px-6"
+                action
+                method="POST"
+              >
                 <div className="mb-4">
                   <label
                     className="block text-gray-700 font-bold mb-2"
@@ -108,7 +109,7 @@ const UpdateUserData = async (updatedData) => {
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     id="name"
                     value={name}
-                    onChange={(e)=>setName(e.target.value)}
+                    onChange={(e) => setName(e.target.value)}
                     type="text"
                     placeholder="Enter your name"
                   />
@@ -126,7 +127,7 @@ const UpdateUserData = async (updatedData) => {
                     id="phone"
                     type="number"
                     value={mobile}
-                    onChange={(e)=>setMobile(e.target.value)}
+                    onChange={(e) => setMobile(e.target.value)}
                     placeholder="Enter your phone number"
                   />
                 </div>
@@ -143,10 +144,10 @@ const UpdateUserData = async (updatedData) => {
                       <input
                         class="my-auto transform scale-125 "
                         type="radio"
-                        checked={gender=="male"?"checked":""}
+                        checked={gender == "male" ? "checked" : ""}
                         name="sfg"
                         value="male"
-                        onChange={(e)=>setGender(e.target.value)}
+                        onChange={(e) => setGender(e.target.value)}
                       />
                       <div class="title px-2">Male</div>
                     </label>
@@ -154,10 +155,10 @@ const UpdateUserData = async (updatedData) => {
                       <input
                         class="my-auto transform scale-125"
                         type="radio"
-                        checked={gender=="female"?"checked":""}
+                        checked={gender == "female" ? "checked" : ""}
                         name="sfg"
                         value="female"
-                        onChange={(e)=>setGender(e.target.value)}
+                        onChange={(e) => setGender(e.target.value)}
                       />
                       <div class="title px-2">Female</div>
                     </label>
@@ -174,7 +175,7 @@ const UpdateUserData = async (updatedData) => {
                     className="shadow appearance-none mb-2 border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     type="url"
                     value={facebook}
-                    onChange={(e)=> setfacebook(e.target.value)}
+                    onChange={(e) => setfacebook(e.target.value)}
                     placeholder="facebook"
                   />{" "}
                   <input
@@ -182,21 +183,21 @@ const UpdateUserData = async (updatedData) => {
                     type="url"
                     placeholder="Linkdin"
                     value={linkedin}
-                    onChange={(e)=> setlinkedin(e.target.value)}
+                    onChange={(e) => setlinkedin(e.target.value)}
                   />{" "}
                   <input
                     className="shadow appearance-none mb-2 border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     type="url"
                     placeholder="Youtube"
                     value={youtube}
-                    onChange={(e)=> setyoutube(e.target.value)}
+                    onChange={(e) => setyoutube(e.target.value)}
                   />{" "}
                   <input
                     className="shadow appearance-none mb-2 border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     type="url"
                     placeholder="X"
                     value={x}
-                    onChange={(e)=> setX(e.target.value)}
+                    onChange={(e) => setX(e.target.value)}
                   />
                 </div>
                 <div className="mb-4">
@@ -206,13 +207,23 @@ const UpdateUserData = async (updatedData) => {
                   >
                     Profile Pic
                   </label>
-                  <img src={dbProfilePic} alt="profile" className="h-16 w-16 text-center"/>
+                  {dbProfilePic && (
+                    <img
+                      src={dbProfilePic}
+                      alt="profile"
+                      className="h-16 w-16 text-center"
+                    />
+                  )}
+
                   <input
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     type="file"
                     placeholder="Select Profile Picture"
-                    value={profilePic}
-                    onChange={(e)=>setProfilePic(e.target.files)}
+                    onChange={(e) => {
+                      const selectedFile = e.target.files[0];
+                      setProfilePic(selectedFile);
+                      setDbProfilePic(URL.createObjectURL(selectedFile));
+                    }}
                   />
                 </div>
 
