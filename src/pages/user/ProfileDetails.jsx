@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Layout from "../../components/Dashboard/Layout";
 import Profilecard from "../../components/Dashboard/Profile";
 import axios from "axios";
+import Spinner from "../../components/Spinner";
 
 const ProfileDetails = () => {
   // -----------------api-call-------------below----------
@@ -24,7 +25,6 @@ const ProfileDetails = () => {
           },
         }
       );
-      console.log("user profile",res)
       setUserData(res?.data);
     } catch (error) {
       console.error("Error fetching user data:", error);

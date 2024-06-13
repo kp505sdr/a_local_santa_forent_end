@@ -8,7 +8,7 @@ import axios from "axios";
 import dateFormat from "dateformat";
 import AnchorLink from "react-anchor-link-smooth-scroll";
 import AdminLayout from "../../components/Dashboard/Layout/adminlayout";
-const SponsoredAdsDetails = () => {
+const AdsDetailsView = () => {
   const userInfo = localStorage.getItem("UserInformation");
   const userdata = JSON.parse(userInfo);
   let navigate = useNavigate();
@@ -356,4 +356,4 @@ const SponsoredAdsDetails = () => {
   );
 };
 
-export default SponsoredAdsDetails;
+export default AdsDetailsView;

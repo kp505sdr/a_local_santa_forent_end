@@ -1,12 +1,12 @@
 import React, { useRef, useState } from "react";
 import imgIcon from "../../assets/photo.png";
-import AdminLayout from "../../components/Dashboard/Layout/adminlayout";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { loadStripe } from "react-stripe-js";
 import Pricing from "../../components/Pricing";
+import AdminLayout from "../../components/Dashboard/Layout/adminlayout";
 
-const SponseredAds = () => {
+const CreateAdsWithAdmin = () => {
   const userInfo = localStorage.getItem("UserInformation");
   const userdata = JSON.parse(userInfo);
   let token = userdata?.token;
@@ -15,6 +15,8 @@ const SponseredAds = () => {
   const [url, setUrl] = useState("");
   const [featuredImage, setFeaturedImage] = useState("");
   const [featuredImageFile, setFeaturedImageFile] = useState(null);
+  const [option, setOption] = useState();
+
   const [plan, setPlan] = useState([]);
 
   const handleImagefeatured = (e) => {
@@ -38,7 +40,7 @@ const SponseredAds = () => {
   const prevStep = () => setStep((prevStep) => prevStep - 1);
   const nextStep = () => {
     if (step === 1) {
-      if (!featuredImage || url.trim() === "") {
+      if (!featuredImage || url.trim() === "" || !option) {
         toast.error(
           "Please fill in both required fields for SponsoredAds details.",
           {
@@ -88,10 +90,15 @@ const SponseredAds = () => {
     formData.append("files", featuredImage);
     formData.append("subscrption", plan.subscrption);
     formData.append("price", plan.price);
+    formData.append("selectads", option);
 
     try {
+      console.log(
+        "Submitting to URL:",
+        `${process.env.REACT_APP_API}/api/v1/create-ads`
+      );
       const res = await axios.post(
-        `${process.env.REACT_APP_API}/api/v1/create-SponseredAds`,
+        `${process.env.REACT_APP_API}/api/v1/create-ads`,
         formData,
         {
           headers: {
@@ -100,24 +107,25 @@ const SponseredAds = () => {
         }
       );
 
-      if (res.status === 201) {
-        const mydata = [
-          {
-            subscription: plan.subscription,
-            price: plan.price,
-            productId: plan._id,
-            qty: 1,
-          },
-        ];
+      //   if (res.status === 201) {
+      //     const mydata = [
+      //       {
+      //         subscription: plan.subscription,
+      //         price: plan.price,
+      //         productId: plan._id,
+      //         qty: 1,
+      //       },
+      //     ];
 
-        console.log(mydata);
+      //     console.log(mydata);
 
-        await MakePayment(mydata);
-      }
+      //     await MakePayment(mydata);
+      //   }
+
       toast.success(res.data.message);
     } catch (err) {
-      console.error("Submit error: ", err);
-      toast.error("Failed to submit sponsored ad. Please try again.");
+      console.error(err);
+      toast.error("Failed to submit ads. Please try again.");
     }
   };
 
@@ -181,6 +189,39 @@ const SponseredAds = () => {
                   </label>
                 </div>
               </div>
+              <div className="mb-4">
+                <label
+                  className="block text-gray-700 font-bold mb-2"
+                  htmlFor="date"
+                >
+                  Select Ads
+                </label>
+                <div className="flex">
+                  {" "}
+                  <label className="flex radio p-2 cursor-pointer">
+                    <input
+                      className="my-auto transform scale-125 "
+                      type="radio"
+                      checked={option == "sponseredAds" ? "checked" : ""}
+                      name="selectads"
+                      value="sponseredAds"
+                      onChange={(e) => setOption(e.target.value)}
+                    />
+                    <div className="title px-2">SponseredAds</div>
+                  </label>
+                  <label className="flex radio p-2 cursor-pointer">
+                    <input
+                      className="my-auto transform scale-125"
+                      type="radio"
+                      checked={option == "fixedAds" ? "checked" : ""}
+                      name="selectads"
+                      value="fixedAds"
+                      onChange={(e) => setOption(e.target.value)}
+                    />
+                    <div className="title px-2">Fixed Ads</div>
+                  </label>
+                </div>
+              </div>
 
               <button
                 type="button"
@@ -193,15 +234,31 @@ const SponseredAds = () => {
           )}
         </div>
         {step === 2 && (
-          <Pricing
-            onSubmit={handleSubmit}
-            setPlan={setPlan}
-            prevStep={prevStep}
-          />
+          <>
+            {option === "sponseredAds" && (
+              <div className="bg-yellow-300 w-full">
+                <Pricing
+                  onSubmit={handleSubmit}
+                  setPlan={setPlan}
+                  prevStep={prevStep}
+                />
+              </div>
+            )}
+
+            {option === "fixedAds" && (
+              <div className="bg-red-300 w-full">
+                <Pricing
+                  onSubmit={handleSubmit}
+                  setPlan={setPlan}
+                  prevStep={prevStep}
+                />
+              </div>
+            )}
+          </>
         )}
       </div>
     </AdminLayout>
   );
 };
 
-export default SponseredAds;
+export default CreateAdsWithAdmin;

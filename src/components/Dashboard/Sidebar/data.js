@@ -12,6 +12,7 @@ import home from "../../../assets/icon/home-48.png";
 import MailsAlert from "../../../assets/icon/alert-50.png";
 import job from "../../../assets/icon/job-64.png";
 import editprofile from "../../../assets/icon/edit-profile-24.png";
+import Ads from "../../../assets/icon/ad-icon.png";
 
 export const user = [
   { id: 1, heading: "Dashboard", link: "/user-dashboard", img: home },
@@ -23,12 +24,18 @@ export const user = [
   },
   {
     id: 3,
+    heading: "All Ads",
+    link: "/ads",
+    img: Ads,
+  },
+  {
+    id: 4,
     heading: "Blog",
     link: "/user-bloglist",
     img: Blog,
   },
   {
-    id: 4,
+    id: 5,
     heading: "Create listing",
     link: "/business-form",
     img: job,
@@ -42,13 +49,13 @@ export const user = [
     img: editprofile,
   },
   {
-    id: 7,
+    id: 8,
     heading: "Change Password",
     link: "/Change-password",
     img: changepsd,
   },
   {
-    id: 7,
+    id: 9,
     heading: "Chats & Email",
     link: "/chats",
     img: Livechat,
@@ -88,67 +95,37 @@ export const admin = [
   },
   {
     id: 5,
-    heading: "Sponsored Ads",
-    link: "/sponsored-all-ads",
-    img: SponseredAds,
-    subheading: [
-      {
-        id: 1,
-        heading: "Terms And Condition",
-      },
-      {
-        id: 2,
-        heading: "Privacy Policy",
-      },
-      {
-        id: 3,
-        heading: "FAQ",
-      },
-      {
-        id: 4,
-        heading: "Custom Page",
-      },
-      {
-        id: 5,
-        heading: " Contact Us",
-      },
-      {
-        id: 6,
-        heading: "About Us",
-      },
-      {
-        id: 6,
-        heading: "Footer",
-      },
-    ],
+    heading: "All Ads",
+    link: "/all-ads-view",
+    img: Ads,
   },
+  // {
+  //   id: 6,
+  //   heading: "Fixed Ads",
+  //   link: "/fixed-ads",
+  //   img: Fixedads,
+  // },
   {
     id: 6,
-    heading: "Fixed Ads",
-    link: "/fixed-ads",
-    img: Fixedads,
-  },
-  {
-    id: 7,
     heading: "Mails & Alerts",
     link: "/mails-alerts",
     img: MailsAlert,
   },
   {
-    id: 8,
+    id: 7,
     heading: "PORT Seting",
     link: "/smtp-seting",
     img: changepsd,
   },
 
   {
-    id: 9,
+    id: 8,
     heading: "Edit Profile",
     link: "/edit-profile-admin",
     img: editprofile,
   },
   {
-    id: 10,
+    id: 9,
     heading: "Change Password",
     link: "/Change-password-admin",
     img: changepsd,

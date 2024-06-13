@@ -126,6 +126,9 @@ const Editprofile = () => {
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     id="phone"
                     type="number"
+                    onInput={(e) =>
+                      (e.target.value = e.target.value.slice(0, 10))
+                    }
                     value={mobile}
                     onChange={(e) => setMobile(e.target.value)}
                     placeholder="Enter your phone number"

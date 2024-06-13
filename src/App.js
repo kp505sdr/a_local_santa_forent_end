@@ -28,7 +28,6 @@ import Userslist from "./pages/Admin/uerslist";
 import Latestlings from "./pages/Admin/latestlistings";
 import Activated from "./pages/Admin/Activated";
 import FixedAds from "./pages/Admin/FixedAds";
-import SpansoredAds from "./pages/Admin/SpansoredAds";
 import Ourblogdetails from "./pages/ourblogdetails";
 import Userdashboard from "./pages/user";
 import Comments from "./pages/Admin/Comments";
@@ -92,8 +91,7 @@ import UserSponsored from "./pages/user/userSponsored";
 import ActiveAdminTable from "./components/Table/ActiveTable";
 import PendingAdminTable from "./components/Table/PendingListingTable";
 import InactiveAdminTable from "./components/Table/InActiveTable";
-import SponsoredAllAds from "./pages/Admin/sponsoredallAds";
-import SponsoredAdsDetails from "./pages/Admin/sponsoredadsdetails";
+import AdsDetailsView from "./pages/Admin/adsdetailsview";
 import LocalRentals from "./pages/localRentals";
 import EntrepreneurialBusiness from "./pages/EntrepreneurialBusiness";
 import LocalTalks from "./pages/LocalTalks";
@@ -112,21 +110,18 @@ import ChatApp from "./pages/user/CatApp/ChatApp";
 import ChatingNow from "./pages/user/CatApp/ChatingNow";
 import PublicUserProfile from "./pages/user/PublicUserProfile";
 import { useEffect, useState } from "react";
-
-
-
-
+import CreateAds from "./pages/user/createads";
+import AllAds from "./pages/user/allads";
+import AdsDetails from "./pages/user/adsdetails";
+import AllAdsView from "./pages/Admin/AllAdsView";
+import CreateAdsWithAdmin from "./pages/Admin/CreateAdsWithAdmin";
 
 function App() {
   const user = useSelector((state) => state.user);
   const userInfo = localStorage.getItem("UserInformation");
   const userdata = JSON.parse(userInfo);
   let userinfo = userdata?.user?.isAdmin;
-  let token=userdata?.token
-
-
-
-  
+  let token = userdata?.token;
 
   return (
     <Routes>
@@ -367,16 +362,11 @@ function App() {
           </ProtectedRoute>
         }
       />
-           <Route
+      <Route
         exact
         path="/public-profile-details/:id"
-        element={
-       
-            <PublicUserProfile />
-       
-        }
+        element={<PublicUserProfile />}
       />
-   
       <Route
         exact
         path="/add-blog"
@@ -413,7 +403,7 @@ function App() {
           </ProtectedRoute>
         }
       />
-       <Route
+      <Route
         exact
         path="/chat-app/:id"
         element={
@@ -431,7 +421,7 @@ function App() {
           </ProtectedRoute>
         }
       />
-        <Route
+      <Route
         exact
         path="/chating-now/:id"
         element={
@@ -442,6 +432,33 @@ function App() {
       />
       <Route exact path="/allblogs" element={<AllBlogs />} /> {/*by karan */}
       <Route exact path="/user-blogdetails/:id" element={<BlogsDetails />} />
+      <Route
+        exact
+        path="/ads"
+        element={
+          <ProtectedRoute>
+            <AllAds />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        exact
+        path="/ads-details/:id"
+        element={
+          <ProtectedRoute>
+            <AdsDetails />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        exact
+        path="/ads-create"
+        element={
+          <ProtectedRoute>
+            <CreateAds />
+          </ProtectedRoute>
+        }
+      />
       {/*------------------------------------------------ Admin panel ----------------------------------------- */}
       <Route
         exact
@@ -511,24 +528,24 @@ function App() {
       />
       <Route
         exact
-        path="/spansored-ads-create"
-        element={<ProtectedAdmin Admindashboard={SpansoredAds} />}
-      />{" "}
-      <Route
-        exact
-        path="/spansored-ads-details/:id"
-        element={<ProtectedAdmin Admindashboard={SponsoredAdsDetails} />}
+        path="/create-ads"
+        element={<ProtectedAdmin Admindashboard={CreateAdsWithAdmin} />}
       />
       <Route
         exact
-        path="/sponsored-all-ads"
-        element={<ProtectedAdmin Admindashboard={SponsoredAllAds} />}
+        path="/ads-details-data/:id"
+        element={<ProtectedAdmin Admindashboard={AdsDetailsView} />}
       />
       <Route
+        exact
+        path="/all-ads-view"
+        element={<ProtectedAdmin Admindashboard={AllAdsView} />}
+      />
+      {/* <Route
         exact
         path="/fixed-ads"
         element={<ProtectedAdmin Admindashboard={FixedAds} />}
-      />
+      /> */}
       <Route
         exact
         path="/edit-profile-admin"

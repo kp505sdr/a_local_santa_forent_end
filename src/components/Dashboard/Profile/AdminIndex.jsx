@@ -11,7 +11,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const AdminIndex = ({ userData }) => {
-
   return (
     <div className="bg-gray-100">
       <div className="mx-auto py-8">
@@ -23,8 +22,8 @@ const AdminIndex = ({ userData }) => {
                   <img
                     className="w-48 h-48 mx-auto"
                     src={
-                      userData?.profilepic
-                        ? userData?.profilepic
+                      userData?.profilePic
+                        ? `${process.env.REACT_APP_API}/${userData.profilePic}`
                         : "https://static-00.iconduck.com/assets.00/user-icon-512x512-x23sj495.png"
                     }
                     alt="Profile picture"

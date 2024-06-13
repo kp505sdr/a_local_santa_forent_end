@@ -4,7 +4,7 @@ import dateFormat from "dateformat";
 import axios from "axios";
 import AdminLayout from "../../components/Dashboard/Layout/adminlayout";
 
-const SponsoredAllAds = () => {
+const AllAdsView = () => {
   const userInfo = localStorage.getItem("UserInformation");
   const userdata = JSON.parse(userInfo);
   let token = userdata?.token;
@@ -20,7 +20,7 @@ const SponsoredAllAds = () => {
   const getSponsoredAdsData = async () => {
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_API}/api/v1/gets-all-SponseredAds`,
+        `${process.env.REACT_APP_API}/api/v1/gets-all-ads`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setAllListing(res?.data);
@@ -57,7 +57,7 @@ const SponsoredAllAds = () => {
     try {
       setLoader(true);
       const res = await axios.delete(
-        `${process.env.REACT_APP_API}/api/v1/delete-SponseredAds/${id}`,
+        `${process.env.REACT_APP_API}/api/v1/delete-ads/${id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setAllListing(res?.data);
@@ -74,7 +74,7 @@ const SponsoredAllAds = () => {
         <div className="align-middle rounded-tl-lg rounded-tr-lg inline-block w-full overflow-hidden px-2 py-3">
           <div className="flex justify-between items-center">
             <div>
-              All Sponsored Ads{" "}
+              All Ads
               <span className="text-green-400 p-1">{allListing?.length}</span>
             </div>
             <div>
@@ -97,7 +97,7 @@ const SponsoredAllAds = () => {
                 InActive
               </Link>
               <Link
-                to="/spansored-ads-create"
+                to="/create-ads"
                 className="inline-flex items-center justify-center px-3 py-1 font-sans font-semibold tracking-wide text-white text-xs bg-blue-400 hover:bg-lue-500  rounded-sm shadow-2xl"
               >
                 Post New Ads
@@ -116,12 +116,12 @@ const SponsoredAllAds = () => {
                 {/* <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
                   Status
                 </th> */}
-                {/* <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
-                  Views
-                </th> */}
 
                 <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
                   Url
+                </th>
+                <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
+                  Ads Type
                 </th>
                 <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
                   Start Date
@@ -170,6 +170,9 @@ const SponsoredAllAds = () => {
                       </span>
                     </td>
                     <td className="px-6 whitespace-nowrap text-green-900 border-gray-500 text-sm leading-5">
+                      {res?.selectads}
+                    </td>
+                    <td className="px-6 whitespace-nowrap text-green-900 border-gray-500 text-sm leading-5">
                       {dateFormat(res?.createdAt, " mmmm d , yyyy")}
                     </td>
                     <td className="px-6 whitespace-nowrap text-red-900 border-gray-500 text-sm leading-5">
@@ -177,7 +180,7 @@ const SponsoredAllAds = () => {
                     </td>
                     <td className="px-6 text-left whitespace-nowrap text-blue-900 border-gray-500 text-sm leading-5 cursor-pointer">
                       <div className="flex gap-x-2 justify-start items-center">
-                        <Link to={`/spansored-ads-details/${res?._id}`}>
+                        <Link to={`/ads-details-data/${res?._id}`}>
                           <i className="fa fa-eye text-green-500 hover:text-green-400"></i>
                         </Link>
                         <button onClick={() => delethandle(res._id)}>
@@ -251,4 +254,4 @@ const SponsoredAllAds = () => {
   );
 };
 
-export default SponsoredAllAds;
+export default AllAdsView;
