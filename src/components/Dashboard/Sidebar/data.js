@@ -33,7 +33,7 @@ export const user = [
     link: "/business-form",
     img: job,
   },
- 
+
   { id: 6, heading: "Reviews", link: "/reviews", img: Reviews },
   {
     id: 7,
@@ -89,7 +89,7 @@ export const admin = [
   {
     id: 5,
     heading: "Sponsored Ads",
-    link: "/spansored-ads",
+    link: "/sponsored-all-ads",
     img: SponseredAds,
     subheading: [
       {
@@ -140,7 +140,7 @@ export const admin = [
     link: "/smtp-seting",
     img: changepsd,
   },
- 
+
   {
     id: 9,
     heading: "Edit Profile",
@@ -153,5 +153,4 @@ export const admin = [
     link: "/Change-password-admin",
     img: changepsd,
   },
- 
 ];

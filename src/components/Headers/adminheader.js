@@ -10,8 +10,15 @@ import Reviews from "../../assets/icon/Reviews -  alocalsanta.com.png";
 import SponseredAds from "../../assets/icon/Sponsered Ads -alocalsanta.com.png";
 import MailsAlert from "../../assets/icon/alert-50.png";
 
-export default function AdminHeaderStats({ allListing, allUser,newListing,allBlog,allComment,allReviews,loader}) {
-   
+export default function AdminHeaderStats({
+  allListing,
+  allUser,
+  newListing,
+  allBlog,
+  allComment,
+  allReviews,
+  loader,
+}) {
   return (
     <>
       {/* Header */}
@@ -24,7 +31,13 @@ export default function AdminHeaderStats({ allListing, allUser,newListing,allBlo
                 <div className="w-full sm:px-4">
                   <CardStats
                     statSubtitle="Listings"
-                    statTitle={loader?<b className="text-blue-600 p-1 text-xs">Loading...</b>:allListing?.length}
+                    statTitle={
+                      loader ? (
+                        <b className="text-blue-600 p-1 text-xs">Loading...</b>
+                      ) : (
+                        allListing?.length
+                      )
+                    }
                     statArrow="up"
                     statPercent="3.48"
                     statPercentColor="text-emerald-500"
@@ -36,9 +49,15 @@ export default function AdminHeaderStats({ allListing, allUser,newListing,allBlo
               </Link>
               <Link to="/comments">
                 <div className="w-full sm:px-4">
-                  <CardStats 
+                  <CardStats
                     statSubtitle="Comments"
-                    statTitle={loader?<b className="text-blue-600 p-1 text-xs">Loading...</b>:allComment}
+                    statTitle={
+                      loader ? (
+                        <b className="text-blue-600 p-1 text-xs">Loading...</b>
+                      ) : (
+                        allComment
+                      )
+                    }
                     statArrow="down"
                     statPercent="3.48"
                     statPercentColor="text-red-500"
@@ -50,9 +69,15 @@ export default function AdminHeaderStats({ allListing, allUser,newListing,allBlo
               </Link>
               <Link to="/admin-reviews">
                 <div className="w-full sm:px-4">
-                  <CardStats 
+                  <CardStats
                     statSubtitle="Reviews"
-                    statTitle={loader?<b className="text-blue-600 p-1 text-xs">Loading...</b>:allReviews}
+                    statTitle={
+                      loader ? (
+                        <b className="text-blue-600 p-1 text-xs">Loading...</b>
+                      ) : (
+                        allReviews
+                      )
+                    }
                     statArrow="down"
                     statPercent="3.48"
                     statPercentColor="text-red-500"
@@ -66,7 +91,13 @@ export default function AdminHeaderStats({ allListing, allUser,newListing,allBlo
                 <div className="w-full sm:px-4">
                   <CardStats
                     statSubtitle="Blogs"
-                    statTitle={loader?<b className="text-blue-600 p-1 text-xs">Loading...</b>:allBlog?.length}
+                    statTitle={
+                      loader ? (
+                        <b className="text-blue-600 p-1 text-xs">Loading...</b>
+                      ) : (
+                        allBlog?.length
+                      )
+                    }
                     statArrow="down"
                     statPercent="1.10"
                     statPercentColor="text-orange-500"
@@ -76,7 +107,7 @@ export default function AdminHeaderStats({ allListing, allUser,newListing,allBlo
                   />
                 </div>
               </Link>
-              <Link to="/spansored-ads">
+              <Link to="/sponsored-all-ads">
                 <div className="w-full sm:px-4">
                   <CardStats
                     statSubtitle="Spansored Ads"
@@ -108,7 +139,13 @@ export default function AdminHeaderStats({ allListing, allUser,newListing,allBlo
                 <div className="w-full sm:px-4">
                   <CardStats
                     statSubtitle="All Users"
-                    statTitle={loader?<b className="text-blue-600 p-1 text-xs">Loading...</b>:allUser?.length}
+                    statTitle={
+                      loader ? (
+                        <b className="text-blue-600 p-1 text-xs">Loading...</b>
+                      ) : (
+                        allUser?.length
+                      )
+                    }
                     statArrow="down"
                     statPercent="1.10"
                     statPercentColor="text-orange-500"
@@ -122,7 +159,13 @@ export default function AdminHeaderStats({ allListing, allUser,newListing,allBlo
                 <div className="w-full sm:px-4">
                   <CardStats
                     statSubtitle="Mails & Alerts"
-                    statTitle={loader?<b className="text-blue-600 p-1 text-xs">Loading...</b>:newListing?.length}
+                    statTitle={
+                      loader ? (
+                        <b className="text-blue-600 p-1 text-xs">Loading...</b>
+                      ) : (
+                        newListing?.length
+                      )
+                    }
                     statArrow="up"
                     statPercent="12"
                     statPercentColor="text-emerald-500"
@@ -130,7 +173,6 @@ export default function AdminHeaderStats({ allListing, allUser,newListing,allBlo
                     image={MailsAlert}
                     statIconColor="bg-orange-500"
                   />
-                  
                 </div>
               </Link>
             </div>
