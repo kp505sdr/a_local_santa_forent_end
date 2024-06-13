@@ -24,6 +24,7 @@ const ProfileDetails = () => {
           },
         }
       );
+      console.log("user profile",res)
       setUserData(res?.data);
     } catch (error) {
       console.error("Error fetching user data:", error);

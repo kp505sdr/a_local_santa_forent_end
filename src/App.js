@@ -8,7 +8,7 @@ import PublicRoute from "./Routes/PublicRoute";
 // import D3 from "./components/Blogs/d3";
 // import Video from "./components/Blogs/video";
 import PostAnAdvertise from "./components/form/PostAnAdvertise";
-// import Layout from "./components/Layout";
+// import Layout from "./components/Layout";f
 import Layout1 from "./components/Layout/Layout1";
 import Pricing from "./components/Pricing";
 import AdswithUs from "./pages/AdswithUs/adswithus";
@@ -108,12 +108,25 @@ import UserListingCount from "./pages/Admin/UserListingCount";
 import SeeReviews from "./components/Table/SeeReviews";
 import UpdateBlogByAdmin from "./pages/Admin/UpdateBlogByAdmin";
 import GoogleUserPage from "./pages/auth/GoogleUserPage";
+import ChatApp from "./pages/user/CatApp/ChatApp";
+import ChatingNow from "./pages/user/CatApp/ChatingNow";
+import PublicUserProfile from "./pages/user/PublicUserProfile";
+import { useEffect, useState } from "react";
+
+
+
+
 
 function App() {
   const user = useSelector((state) => state.user);
   const userInfo = localStorage.getItem("UserInformation");
   const userdata = JSON.parse(userInfo);
   let userinfo = userdata?.user?.isAdmin;
+  let token=userdata?.token
+
+
+
+  
 
   return (
     <Routes>
@@ -354,6 +367,16 @@ function App() {
           </ProtectedRoute>
         }
       />
+           <Route
+        exact
+        path="/public-profile-details/:id"
+        element={
+       
+            <PublicUserProfile />
+       
+        }
+      />
+   
       <Route
         exact
         path="/add-blog"
@@ -390,12 +413,30 @@ function App() {
           </ProtectedRoute>
         }
       />
+       <Route
+        exact
+        path="/chat-app/:id"
+        element={
+          <ProtectedRoute>
+            <ChatApp />
+          </ProtectedRoute>
+        }
+      />
       <Route
         exact
         path="/chats"
         element={
           <ProtectedRoute>
             <Chats />
+          </ProtectedRoute>
+        }
+      />
+        <Route
+        exact
+        path="/chating-now/:id"
+        element={
+          <ProtectedRoute>
+            <ChatingNow />
           </ProtectedRoute>
         }
       />

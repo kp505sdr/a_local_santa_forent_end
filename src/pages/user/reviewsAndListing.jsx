@@ -7,17 +7,21 @@ import { BlogDescription } from "../../Simple data";
 import axios from "axios";
 import dateFormat from "dateformat";
 import AnchorLink from "react-anchor-link-smooth-scroll";
+import SendMessages from "./CatApp/SendMessages";
+
 const ReviewsAndListing = () => {
   const userInfo = localStorage.getItem("UserInformation");
   const userdata = JSON.parse(userInfo);
   let navigate = useNavigate();
-  var token = userdata?.token;
-  var localEmail = userdata?.user?.email;
+  let token = userdata?.token;
+  let loggedInUserId=userdata?.user?._id
+  let localEmail = userdata?.user?.email;
 
   const [ListingDetails, setListingDetails] = useState();
   const [likeMessage, setlikeMessage] = useState();
   const [LikeAlert, setLikeAlert] = useState(false);
-
+  const [message, setMessage] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
   const [comments, setComments] = useState();
 
   let { id } = useParams();
@@ -42,16 +46,20 @@ const ReviewsAndListing = () => {
   };
 
   // --------------------like API----------------------------------------------
-  const LikeFun = async (id) => {
-    console.log("like token",token)
+  const LikeFun = async (id, token) => {
+   
+  
     if (!token) {
       navigate("/login");
+      return; // Make sure to return after navigating away
     }
     try {
       const res = await axios.put(
         `${process.env.REACT_APP_API}/api/v1/job/like/${id}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        {},
+        { headers: { Authorization: `Bearer ${token}` } } // Corrected the position of headers
       );
+   
       getAllJobData();
       setlikeMessage(res?.data);
       setLikeAlert(true);
@@ -62,6 +70,7 @@ const ReviewsAndListing = () => {
       console.error("Error adding Like:", error);
     }
   };
+  
   // -------------------------comment-fun-API----------------------------------------------
   const CommentFun = async (comment) => {
     if (!token) {
@@ -126,6 +135,7 @@ const ReviewsAndListing = () => {
       console.error("Error Deleting Comment:", error);
     }
   };
+
   return (
     <Layout1>
       {ListingDetails?.map((res, i) => (
@@ -210,34 +220,63 @@ const ReviewsAndListing = () => {
 
                         <div className="sm:flex justify-between">
                           <div className="inline-flex items-center">
-                            <p className="text-sm ">
-                              <span>
+                           
+                         <div className="flex flex-col">
+                             <p className="ml-2">
+                             <span>
                                 <i className="fas fa-calendar-alt"></i>
                               </span>{" "}
-                            </p>
-                            <p className="ml-2">
                               {dateFormat(res?.createdAt, "mmmm dS, yyyy")}
                             </p>
+                          
+                            <Link to={`/public-profile-details/${res?.createdBy[0]?.userId}`} className="flex item-center ml-1"> 
+                  
+                              <img src={res.createdBy[0].profilepic? res.createdBy[0].profilepic:"https://static-00.iconduck.com/assets.00/user-icon-512x512-x23sj495.png"} alt="profilepic" className="h-6 w-6 rounded-full mt-1" />
+                              <p className="ml-2 text-sm text-blue-500 mt-2">{res?.createdBy[0]?.name}</p>
+                            </Link>
+
+                         </div>
+                          
                           </div>
-                          {LikeAlert ? (
+                          {/* {`${loggedInUserId !== res?.createdBy[0]?.userId?
+                            
+                            ( <div className="ml-2 mt-2 sm:visible md:visible lg:visible ">
+                              <SendMessages id={res?.createdBy[0]?.userId} name={res?.createdBy[0]?.name}  profilepic={res?.createdBy[0]?.profilepic} socialMedia={res?.createdBy[0]?.socialMedia}/>
+                              </div>)
+                            
+                            :"show"}`} */}
+                            {loggedInUserId !== res?.createdBy[0]?.userId ? (
+    <div className="ml-2 mt-2 sm:visible md:visible lg:visible">
+        <SendMessages
+            id={res?.createdBy[0]?.userId}
+            name={res?.createdBy[0]?.name}
+            profilepic={res?.createdBy[0]?.profilepic            }
+            socialMedia={res?.createdBy[0]?.socialMedia}
+        />
+    </div>
+) : (
+    <div className="show"></div>
+)}
+                        
+                          {/* {LikeAlert ? (
                             <i className="text-center ml-10">
                               {likeMessage?.message == "Liked" ? (
-                                <span className="text-green-500">
+                                <span className="text-green-500 text-sm">
                                   You Have Liked
                                 </span>
                               ) : (
-                                <span className="text-red-500">
+                                <span className="text-red-500 text-sm">
                                   You Have Unliked
                                 </span>
                               )}
                             </i>
                           ) : (
                             ""
-                          )}
+                          )} */}
                           <div className="text-base flex justify-between sm:gap-x-10 mt-4 sm:mt-0">
-                            <p className="flex items-stretch gap-x-2">
+                            <p className="flex items-stretch lg:mt-6 mt-4 gap-x-1">
                               <span
-                                onClick={() => LikeFun(res?._id)}
+                                onClick={() => LikeFun(res?._id,token)}
                                 className="cursor-pointer"
                               >
                                 {
@@ -250,7 +289,7 @@ const ReviewsAndListing = () => {
                             <p className="flex items-center gap-x-2">
                               <AnchorLink
                                 href="#comment"
-                                className="flex items-stretch gap-x-1"
+                                className="flex mt-3 items-stretch mt-4 gap-x-1"
                               >
                                 <span>
                                   <i className="fa-regular fa-comment text-2xl text-teal-600"></i>
@@ -259,7 +298,7 @@ const ReviewsAndListing = () => {
                               </AnchorLink>
                             </p>
 
-                            <p className="flex items-stretch gap-x-1">
+                            <p className="flex items-stretch mt-4 gap-x-1">
                               <span>
                                 <i className="fa fa-eye text-2xl text-blue-600 "></i>{" "}
                               </span>
@@ -269,7 +308,7 @@ const ReviewsAndListing = () => {
                         </div>
                       </div>
                     </div>
-
+              
                     <div className="mb-3">
                       <h6 className="font-semibold text-2xl">Description</h6>
                     </div>
@@ -475,6 +514,7 @@ const ReviewsAndListing = () => {
                         </div>
                       </div>
                     </form>
+   
                   </div>
                 </div>
               </div>
