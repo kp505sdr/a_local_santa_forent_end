@@ -61,7 +61,6 @@ const Updatelistdata = () => {
   // --------------------like API----------------------------------------------
   const LikeFun = async (id) => {
 
-
     if (!token) {
       navigate("/login");
     }
@@ -74,7 +73,7 @@ const Updatelistdata = () => {
       setlikeMessage(res?.data);
       setLikeAlert(true);
       setTimeout(() => {
-        setLikeAlert(false);
+      setLikeAlert(false);
       }, 500);
     } catch (error) {
       console.error("Error adding Like:", error);
@@ -363,6 +362,8 @@ const Updatelistdata = () => {
                               {dateFormat(res?.createdAt, "mmmm dS, yyyy")}
                             </p>
                           </div>
+
+          {/* --------------------like ---------------------- */}
                           {LikeAlert ? (
                             <i className="text-center ml-10">
                               {likeMessage?.message == "Liked" ? (
@@ -381,7 +382,7 @@ const Updatelistdata = () => {
                           <div className="text-base flex justify-between sm:gap-x-10 mt-4 sm:mt-0">
                             <p className="flex items-stretch gap-x-2">
                               <span
-                                onClick={() => LikeFun(res?._id)}
+                                onClick={() =>LikeFun(res?._id)}
                                 className="cursor-pointer"
                               >
                                 {
@@ -390,6 +391,9 @@ const Updatelistdata = () => {
                               </span>{" "}
                               {res?.likes?.length}
                             </p>
+
+    {/* --------------------like --------------------------------------- */}
+
 
                             <p className="flex items-center gap-x-2">
                               <AnchorLink
