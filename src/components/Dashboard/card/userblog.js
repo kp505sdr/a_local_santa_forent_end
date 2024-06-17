@@ -62,7 +62,6 @@ const Userblog = () => {
         </Link>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-     
         {blogData?.map((res, i) => (
           <div className="rounded overflow-hidden shadow-lg flex flex-col">
             <Link to={`/user-blogdetails/${res._id}`}>

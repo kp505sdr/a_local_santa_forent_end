@@ -87,7 +87,7 @@ const CreateAds = () => {
 
     const formData = new FormData();
     formData.append("url", url);
-    formData.append("files", featuredImage);
+    formData.append("file", featuredImage);
     formData.append("subscrption", plan.subscrption);
     formData.append("price", plan.price);
     formData.append("selectads", option);

@@ -62,7 +62,6 @@ import AdminProfileDetails from "./pages/Admin/AdminProfileDetails";
 import AdminReviews from "./pages/Admin/AdminReviews";
 import PortSeting from "./pages/Admin/PortSeting";
 import AllListing from "./pages/Admin/AllListing";
-import EditBlogAdmin from "./pages/Admin/EditBlogAdmin";
 import ListingDetailsFun from "./components/Blogs";
 import AllLocalBussiess from "./pages/ViewMoreLocalBussiess";
 import ReviewsAndListing from "./pages/user/reviewsAndListing";
@@ -302,15 +301,6 @@ function App() {
           </ProtectedRoute>
         }
       />
-      {/* <Route
-        exact
-        path="/wishist"
-        element={
-          <ProtectedRoute>
-            <Wishist />
-          </ProtectedRoute>
-        }
-      /> */}
       <Route
         exact
         path="/reviews"
@@ -497,8 +487,13 @@ function App() {
       />
       <Route
         exact
-        path="/admin-edit-blog/:id"
-        element={<ProtectedAdmin Admindashboard={EditBlogAdmin} />}
+        path="/blogs"
+        element={<ProtectedAdmin Admindashboard={Bloglist} />}
+      />
+      <Route
+        exact
+        path="/blogs-edit/:id"
+        element={<ProtectedAdmin Admindashboard={UpdateBlogByAdmin} />}
       />
       <Route
         exact
@@ -583,11 +578,6 @@ function App() {
       />
       <Route
         exact
-        path="/blogs"
-        element={<ProtectedAdmin Admindashboard={Bloglist} />}
-      />
-      <Route
-        exact
         path="/comments"
         element={<ProtectedAdmin Admindashboard={Comments} />}
       />
@@ -595,11 +585,6 @@ function App() {
         exact
         path="/comments-view/:id"
         element={<ProtectedAdmin Admindashboard={CommentView} />}
-      />
-      <Route
-        exact
-        path="/blogs-edit/:id"
-        element={<ProtectedAdmin Admindashboard={UpdateBlogByAdmin} />}
       />
     </Routes>
   );
