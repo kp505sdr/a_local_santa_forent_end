@@ -11,16 +11,15 @@ const EditUserblog = () => {
   const userInfo = localStorage.getItem("UserInformation");
   const userdata = JSON.parse(userInfo);
   let token = userdata?.token;
-
   const [Loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-
   const [description, setDescription] = useState("");
   const [title, setTitle] = useState("");
 
   const [image, setImage] = useState([]);
-  const [file, setFiles] = useState([]);
+  const [file, setFiles] = useState([]); // Initialize as an array
+  const [existingImages, setExistingImages] = useState([]);
 
   const maxSize = 250 * 1024; // 250KB
 
@@ -35,7 +34,6 @@ const EditUserblog = () => {
     );
 
     if (selectedFiles.length === 0) {
-      // No valid image files selected
       alert("Please select a valid image file (JPEG, PNG, GIF).");
       return;
     }
@@ -49,22 +47,29 @@ const EditUserblog = () => {
       }
     }
 
-    if (image.length + newUrls.length > 4) {
+    if (existingImages.length + newUrls.length > 4) {
       alert("You can upload a maximum of 4 images.");
       return;
     }
-
     setImage([...image, ...newUrls]);
-    setFiles([...files, ...newFiles]);
+    setFiles([...file, ...newFiles]);
+  };
+
+  const handleExistingImageDelete = (index) => {
+    const updatedImages = [...existingImages];
+    updatedImages.splice(index, 1);
+    setExistingImages(updatedImages);
   };
 
   const handleImageDelete = (index) => {
     const updatedImages = [...image];
     updatedImages.splice(index, 1);
     setImage(updatedImages);
-  };
 
-  // -----------------api-call-------------below----------
+    const updatedFiles = [...file];
+    updatedFiles.splice(index, 1);
+    setFiles(updatedFiles);
+  };
 
   const getBlogData = async () => {
     try {
@@ -81,11 +86,7 @@ const EditUserblog = () => {
 
       setTitle(res?.data?.title);
       setDescription(res?.data?.blogsDetails);
-      setImage(
-        res?.data?.images?.map(
-          (img) => `${process.env.REACT_APP_API}/${img.path}`
-        )
-      );
+      setExistingImages(res?.data?.images);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -113,7 +114,7 @@ const EditUserblog = () => {
       if (res.status === 200) {
         toast.success(res?.data?.message);
         setTimeout(() => {
-          navigate("/user-bloglist");
+          navigate("/blogs");
         }, 800);
       }
     } catch (error) {
@@ -124,21 +125,13 @@ const EditUserblog = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const uniqueFiles = file.filter(
-      (obj, index, self) =>
-        index === self.findIndex((t) => t.id === obj.id && t.name === obj.name)
-    );
-
     const formData = new FormData();
     formData.append("title", title);
     formData.append("blogsDetails", description);
-    uniqueFiles?.forEach((image) => {
+    formData.append("existingImages", JSON.stringify(existingImages));
+    file.forEach((image) => {
       formData.append("files", image);
     });
-
-    for (let pair of formData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
 
     try {
       await UpdateBlog(formData);
@@ -189,40 +182,52 @@ const EditUserblog = () => {
               <span className="font-semibold"> Add Images :</span>
             </label>
             <div className="mx-auto flex flex-col items-center justify-center p-2">
-              {image.length === 0 ? (
-                <p className="text-white dark:text-gray-200"></p>
-              ) : (
-                <div className="grid grid-cols-3 gap-4">
-                  {image?.map((imageUrl, index) => (
-                    <div key={index} className="relative pb-2">
-                      <img
-                        src={imageUrl}
-                        className="w-11/12 h-16 object-contain border border-gray-300 bg-white text-gray-700 focus:border-blue-500 focus:outline-none focus:ring dark:text-gray-300 dark:focus:border-blue-500"
-                        alt={`Image ${index}`}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => handleImageDelete(index)}
-                        className="absolute -top-4 right-0 w-5 h-5 flex items-center justify-center m-auto p-1 bg-red-500 text-white rounded-full"
-                      >
-                        X
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <div className="grid grid-cols-3 gap-4">
+                {existingImages.map((image, index) => (
+                  <div key={index} className="relative pb-2">
+                    <img
+                      src={`${process.env.REACT_APP_API}/${image.path}`}
+                      alt={image.filename}
+                      className="w-11/12 h-16 object-contain border border-gray-300 bg-white text-gray-700 focus:border-blue-500 focus:outline-none focus:ring dark:text-gray-300 dark:focus:border-blue-500"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleExistingImageDelete(index)}
+                      className="absolute -top-4 right-0 w-5 h-5 flex items-center justify-center m-auto p-1 bg-red-500 text-white rounded-full"
+                    >
+                      X
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-3 gap-4">
+                {image?.map((imageUrl, index) => (
+                  <div key={index} className="relative pb-2">
+                    <img
+                      src={imageUrl}
+                      className="w-11/12 h-16 object-contain border border-gray-300 bg-white text-gray-700 focus:border-blue-500 focus:outline-none focus:ring dark:text-gray-300 dark:focus:border-blue-500"
+                      alt={`Image ${index}`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleImageDelete(index)}
+                      className="absolute -top-4 right-0 w-5 h-5 flex items-center justify-center m-auto p-1 bg-red-500 text-white rounded-full"
+                    >
+                      X
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
             <div className="relative flex items-center justify-center mb-5 border-gray-300 rounded-full mx-auto w-20 h-20 sm:w-34 sm:h-34">
               <input
                 type="file"
                 className="sr-only"
                 onChange={handleFileChange}
-                required
                 multiple
                 name="files"
                 id="fileInput"
-                autoComplete="organization"
-                placeholder="Your title Name"
               />
               <label
                 htmlFor="fileInput"
