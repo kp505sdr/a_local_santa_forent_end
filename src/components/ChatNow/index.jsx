@@ -8,7 +8,7 @@ import "swiper/css/pagination";
 import { choosedata } from "../../Simple data/index";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 
-function ChatNow({ responsiveConfig, text, textSize, hrefLink }) {
+function ChatNow({ responsiveConfig, text, textSize, hrefLink,AllsponseredAds }) {
   const swiperRef = useRef(null);
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -36,13 +36,13 @@ function ChatNow({ responsiveConfig, text, textSize, hrefLink }) {
         className=""
         breakpoints={responsiveConfig}
       >
-        {spt.map((itm, id) => (
+        {AllsponseredAds?.map((res, id) => (
           <SwiperSlide className="" key={id}>
             <Card
-              img={itm.img}
+              img={res}
               text={text}
               textSize={textSize}
-              hrefLink={hrefLink}
+              hrefLink={res?.url}
             />
           </SwiperSlide>
         ))}

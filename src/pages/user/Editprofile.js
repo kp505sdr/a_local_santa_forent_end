@@ -9,10 +9,10 @@ const Editprofile = () => {
   const [name, setName] = useState();
   const [mobile, setMobile] = useState();
   const [gender, setGender] = useState();
-  const [facebook, setfacebook] = useState();
-  const [youtube, setyoutube] = useState();
-  const [linkedin, setlinkedin] = useState();
-  const [x, setX] = useState();
+  const [facebook, setfacebook] = useState("");
+  const [youtube, setyoutube] = useState("");
+  const [linkedin, setlinkedin] = useState("");
+  const [x, setX] = useState("");
 
   const userInfo = localStorage.getItem("UserInformation");
   const userdata = JSON.parse(userInfo);

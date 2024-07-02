@@ -1,13 +1,16 @@
+
+
 import React, { useState } from "react";
 
 export const planFeatured = [
+
   {
-    id: 1,
-    title: "Free",
-    duration: "One Month",
-    subscrption:"free",
+    id: 2,
+    title: "Basic",
+    duration: "Three Month",
+    subscrption:"basic",
     subTitle: "No credit card required. Ever",
-    price: "0",
+    price: "100",
     planfeature: [
       {
         text: "Use your own browser",
@@ -39,137 +42,99 @@ export const planFeatured = [
       },
     ],
   },
-  // {
-  //   id: 2,
-  //   title: "Basic",
-  //   duration: "Three Month",
-  //   subscrption:"basic",
-  //   subTitle: "No credit card required. Ever",
-  //   price: "100",
-  //   planfeature: [
-  //     {
-  //       text: "Use your own browser",
-  //       icon: true,
-  //     },
-  //     {
-  //       text: "Use your own OpenAI key",
-  //       icon: true,
-  //     },
-  //     {
-  //       text: "Data export",
-  //       icon: true,
-  //     },
-  //     {
-  //       text: "Basic support",
-  //       icon: true,
-  //     },
-  //     {
-  //       text: "Scheduled jobs",
-  //       icon: false,
-  //     },
-  //     {
-  //       text: " Smart downloader and cost-optimized AI",
-  //       icon: false,
-  //     },
-  //     {
-  //       text: "Dedicated server",
-  //       icon: false,
-  //     },
-  //   ],
-  // },
-  // {
-  //   id: 3,
-  //   title: "Premium",
-  //   duration: "Six Month",
-  //   subscrption:"premium",
-  //   subTitle: "No credit card required. Ever",
-  //   price: "300",
-  //   planfeature: [
-  //     {
-  //       text: "Use your own browser",
-  //       icon: true,
-  //     },
-  //     {
-  //       text: "Use your own OpenAI key",
-  //       icon: true,
-  //     },
-  //     {
-  //       text: "Data export",
-  //       icon: true,
-  //     },
-  //     {
-  //       text: "Basic support",
-  //       icon: true,
-  //     },
-  //     {
-  //       text: "Scheduled jobs",
-  //       icon: false,
-  //     },
-  //     {
-  //       text: " Smart downloader and cost-optimized AI",
-  //       icon: false,
-  //     },
-  //     {
-  //       text: "Dedicated server",
-  //       icon: false,
-  //     },
-  //   ],
-  // },
-  // {
-  //   id: 4,
-  //   title: "Premium Pluse",
-  //   duration: "One Year",
-  //   subscrption:"premium pluse",
-  //   subTitle: "No credit card required. Ever",
-  //   price: "500",
-  //   planfeature: [
-  //     {
-  //       text: "Use your own browser",
-  //       icon: true,
-  //     },
-  //     {
-  //       text: "Use your own OpenAI key",
-  //       icon: true,
-  //     },
-  //     {
-  //       text: "Data export",
-  //       icon: true,
-  //     },
-  //     {
-  //       text: "Basic support",
-  //       icon: true,
-  //     },
-  //     {
-  //       text: "Scheduled jobs",
-  //       icon: false,
-  //     },
-  //     {
-  //       text: " Smart downloader and cost-optimized AI",
-  //       icon: false,
-  //     },
-  //     {
-  //       text: "Dedicated server",
-  //       icon: false,
-  //     },
-  //   ],
-  // },
+  {
+    id: 3,
+    title: "Premium",
+    duration: "Six Month",
+    subscrption:"premium",
+    subTitle: "No credit card required. Ever",
+    price: "300",
+    planfeature: [
+      {
+        text: "Use your own browser",
+        icon: true,
+      },
+      {
+        text: "Use your own OpenAI key",
+        icon: true,
+      },
+      {
+        text: "Data export",
+        icon: true,
+      },
+      {
+        text: "Basic support",
+        icon: true,
+      },
+      {
+        text: "Scheduled jobs",
+        icon: false,
+      },
+      {
+        text: " Smart downloader and cost-optimized AI",
+        icon: false,
+      },
+      {
+        text: "Dedicated server",
+        icon: false,
+      },
+    ],
+  },
+  {
+    id: 4,
+    title: "Premium Pluse",
+    duration: "One Year",
+    subscrption:"premium pluse",
+    subTitle: "No credit card required. Ever",
+    price: "500",
+    planfeature: [
+      {
+        text: "Use your own browser",
+        icon: true,
+      },
+      {
+        text: "Use your own OpenAI key",
+        icon: true,
+      },
+      {
+        text: "Data export",
+        icon: true,
+      },
+      {
+        text: "Basic support",
+        icon: true,
+      },
+      {
+        text: "Scheduled jobs",
+        icon: false,
+      },
+      {
+        text: " Smart downloader and cost-optimized AI",
+        icon: false,
+      },
+      {
+        text: "Dedicated server",
+        icon: false,
+      },
+    ],
+  },
 ];
 
-const Pricing = ({ onSubmit, setPlan, prevStep }) => {
+const FixedAdsPricing = ({ onSubmit, setPlan, prevStep }) => {
   const [buttonClicked, setButtonClicked] = useState(false);
   return (
     //p-4 md:p-8
     <form onSubmit={onSubmit} className="">
       <div className="py-2 w-full">
         <div className="mx-auto max-w-3xl text-center pb-12 md:pb-10">
-          <h2 className="text-3xl font-bold sm:text-4xl mb-2">Pricing Plans</h2>
+          <h2 className="text-2xl font-bold sm:text-3xl mb-2">Fixed Ads Pricing Plans</h2>
           <p className="text-sm sm:text-base">
             Choose a plan that best suits your data needs.
           </p>
        
         </div>
         {/*  */}
-        <div className="grid grid-cols-1 gap-3 md:grid md:grid-cols-1">
+        <div className="grid grid-cols-1 gap-3 md:grid md:grid-cols-3">
           {planFeatured.map((itm) => {
             return (
               <div
@@ -244,4 +209,4 @@ const Pricing = ({ onSubmit, setPlan, prevStep }) => {
   );
 };
 
-export default Pricing;
+export default FixedAdsPricing;

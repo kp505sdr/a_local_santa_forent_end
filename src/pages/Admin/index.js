@@ -15,6 +15,10 @@ const Admindashboard = () => {
   const [allBlog, setAllBlog] = useState();
   const [allComment, setAllComment] = useState();
   const [allReviews, setallReviews] = useState();
+  const [fixedAd, setFixedAd] = useState();
+  const [sponsoredAd, setSponsoredAd] = useState();
+  const [NewSponsoredAd, setNewSponsoredAd] = useState();
+  
   
   
   const [allUser, setallUser] = useState();
@@ -23,6 +27,7 @@ const Admindashboard = () => {
     getAllListingData();
     getAllUser();
     getAllBlogsData()
+    getSponsoredAdsData()
   }, []);
 
   const getAllListingData = async () => {
@@ -124,12 +129,36 @@ const Admindashboard = () => {
       setLoader(false);
     }
   };
+
+  // ----------------------------------get all-sponsored----------------------------
+  const getSponsoredAdsData = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/gets-all-ads`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+     const fixedAds=res?.data?.filter(item => item?.selectads=="fixedAds")
+     setFixedAd(fixedAds)
+     const sponseredAds=res?.data?.filter(item => item?.selectads=="sponseredAds")
+     setSponsoredAd(sponseredAds)
+
+     const newAds=res?.data?.filter(item => item?.newAds==true)
+     setNewSponsoredAd(newAds)
+
+      setLoader(false);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      setLoader(false);
+    }
+  };
+ 
   return (
     <AdminLayout>
       <div className="my-5">
         <div className="flex flex-col w-full">
           <div className="w-full mb-12 xl:mb-0 px-2 sm:px-0">
-            <AdminHeaderStats allListing={allListing} allUser={allUser} newListing={newListing} allBlog={allBlog}allComment={allComment} allReviews={allReviews} loader={loader}/>
+            <AdminHeaderStats allListing={allListing} allUser={allUser} newListing={newListing} allBlog={allBlog}allComment={allComment} allReviews={allReviews} sponsoredAd={sponsoredAd} fixedAd={fixedAd} NewSponsoredAd={NewSponsoredAd} loader={loader}/>
             <p className="text-blue-600 p-2 font-semibold">
               {loader ? "Loading..." : ""}
             </p>

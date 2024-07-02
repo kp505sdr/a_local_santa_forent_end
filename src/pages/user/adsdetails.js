@@ -94,7 +94,7 @@ const AdsDetails = () => {
                   <div className="flex gap-x-2 items-center py-1.5">
                     <i className="fa-solid fa-globe  text-teal-400"></i>{" "}
                     <h3 className="font-semibold">Url :</h3>{" "}
-                    <p>{ListingDetails?.url}</p>
+                    <a href={`${ListingDetails?.url}`} target="_blank" className="cursor-pointer text-blue-700 hover:text-blue-500">{ListingDetails?.url}</a>
                   </div>
                   <div className="flex gap-x-2 items-center py-1.5">
                     <i className="fa-solid fa-globe  text-teal-400"></i>{" "}
@@ -115,21 +115,8 @@ const AdsDetails = () => {
                       {dateFormat(ListingDetails?.expDate, " mmmm dS, yyyy")}
                     </p>
                   </div>
-                </div>
-                <div>
-                  <p className="text-sm">
-                    Category :{" "}
-                    <span className="text-gray-900">
-                      {ListingDetails?.category}
-                    </span>
-                  </p>
-                  <p className="text-sm">
-                    Subscrption :{" "}
-                    <span className="text-green-600">
-                      {ListingDetails?.subscrption}
-                    </span>
-                  </p>
-                  <p className="text-sm">
+                  <div className="flex gap-x-2 items-center py-1.5">
+                  <p className="font-semibold">
                     Current Status :{" "}
                     <span
                       className={`${
@@ -141,7 +128,23 @@ const AdsDetails = () => {
                       {ListingDetails?.status}
                     </span>
                   </p>
-                  <div className="mt-2">
+                  </div>
+                </div>
+                <div>
+                  {/* <p className="text-sm">
+                    Category :{" "}
+                    <span className="text-gray-900">
+                      {ListingDetails?.category}
+                    </span>
+                  </p> */}
+                  {/* <p className="text-sm">
+                    Subscrption :{" "}
+                    <span className="text-green-600">
+                      {ListingDetails?.subscrption}
+                    </span>
+                  </p> */}
+              
+                  {/* <div className="mt-2">
                     <p className="text-sm text-gray-500">Update Status</p>
                     <select
                       onChange={(e) => setChangeStatus(e.target.value)}
@@ -160,9 +163,9 @@ const AdsDetails = () => {
                     >
                       Update
                     </button>
-                  </div>
+                  </div> */}
 
-                  <div className="mt-2">
+                  {/* <div className="mt-2">
                     <p className="text-sm text-gray-500">Update subscrption</p>
                     <select
                       onChange={(e) => setSubscrption(e.target.value)}
@@ -182,9 +185,9 @@ const AdsDetails = () => {
                     >
                       Update
                     </button>
-                  </div>
+                  </div> */}
 
-                  <div className="mt-2">
+                  {/* <div className="mt-2">
                     <p className="text-sm text-gray-500">Update Expiry Date</p>
                     <input
                       type="date"
@@ -198,7 +201,7 @@ const AdsDetails = () => {
                     >
                       Update
                     </button>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="w-full">

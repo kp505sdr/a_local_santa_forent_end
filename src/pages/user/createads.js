@@ -5,11 +5,18 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { loadStripe } from "react-stripe-js";
 import Pricing from "../../components/Pricing";
+import FixedAdsPricing from "../../components/Pricing/FixedAdsPricing";
+import { useNavigate } from "react-router-dom";
+import SponsoredAds from "../../components/Pricing/SponsoredAds";
 
 const CreateAds = () => {
   const userInfo = localStorage.getItem("UserInformation");
   const userdata = JSON.parse(userInfo);
   let token = userdata?.token;
+  let isAdmin=userdata?.user.isAdmin
+  const navigate = useNavigate();
+
+
 
   const [step, setStep] = useState(1);
   const [url, setUrl] = useState("");
@@ -18,6 +25,7 @@ const CreateAds = () => {
   const [option, setOption] = useState();
 
   const [plan, setPlan] = useState([]);
+  const [plan1, setPlan1] = useState([]);
 
   const handleImagefeatured = (e) => {
     const file = e.target.files[0];
@@ -54,33 +62,29 @@ const CreateAds = () => {
     }
   };
 
-  const MakePayment = async (Product) => {
+  const MakePayment=async(Product)=>{
+
     // pk_test_51P4OOD2NnZF6oUB1feHP6HE1Ein0W0iOClhZYNz4X5ZKbgmqYNIdiLZ61fZh7s6vynJ8eBSmaTlRVtFHbt3lVGJh00ItV7HYMu
-    const stripe = await loadStripe(
-      "pk_test_51P4OOD2NnZF6oUB1feHP6HE1Ein0W0iOClhZYNz4X5ZKbgmqYNIdiLZ61fZh7s6vynJ8eBSmaTlRVtFHbt3lVGJh00ItV7HYMu"
-    );
-    const body = {
-      products: Product,
-    };
-    const headers = {
-      "Content-Type": "application/json",
-    };
-    const response = await fetch(
-      `${process.env.REACT_APP_API}/api/v1/make/payment`,
-      {
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify(body),
-      }
-    );
-    const session = await response.json();
-    const result = stripe.redirectToCheckout({
-      sessionId: session.id,
-    });
-    if (result.error) {
-      console.log(result.error);
+    const stripe=await loadStripe("pk_test_51P4OOD2NnZF6oUB1feHP6HE1Ein0W0iOClhZYNz4X5ZKbgmqYNIdiLZ61fZh7s6vynJ8eBSmaTlRVtFHbt3lVGJh00ItV7HYMu")
+    const body={
+      products:Product
     }
-  };
+    const headers={
+      "Content-Type":"application/json"
+    }
+    const response=await fetch(`${process.env.REACT_APP_API}/api/v1/make/payment`,{
+      method:"POST",
+      headers:headers,
+      body:JSON.stringify(body)
+    })
+    const session=await response.json()
+    const result=stripe.redirectToCheckout({
+      sessionId:session.id
+    })
+   if(result.error){
+    console.log(result.error)
+   }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -88,15 +92,12 @@ const CreateAds = () => {
     const formData = new FormData();
     formData.append("url", url);
     formData.append("file", featuredImage);
-    formData.append("subscrption", plan.subscrption);
-    formData.append("price", plan.price);
+    formData.append("subscrption", plan?.subscrption);
+    formData.append("price", plan?.price);
     formData.append("selectads", option);
 
     try {
-      console.log(
-        "Submitting to URL:",
-        `${process.env.REACT_APP_API}/api/v1/create-ads`
-      );
+   
       const res = await axios.post(
         `${process.env.REACT_APP_API}/api/v1/create-ads`,
         formData,
@@ -107,27 +108,88 @@ const CreateAds = () => {
         }
       );
 
-      //   if (res.status === 201) {
-      //     const mydata = [
-      //       {
-      //         subscription: plan.subscription,
-      //         price: plan.price,
-      //         productId: plan._id,
-      //         qty: 1,
-      //       },
-      //     ];
+      const postData=res.data?.savedata
 
-      //     console.log(mydata);
+      const mydata=[{
+        subscrption:postData?.subscrption,
+        price:postData?.price,
+        productId:postData?._id,
+        qty:1,
+      }]
 
-      //     await MakePayment(mydata);
-      //   }
+      if (isAdmin==true) {
+        toast("Created Successfully!");
+        setTimeout(() => {
+          navigate("/all-ads-views")
+        }, 1000);
+      } 
+  
+     if(postData?.subscrption !=="free"){
+      MakePayment(mydata)
 
-      toast.success(res.data.message);
+     }
+
+
+      // toast.success(res.data.message);
     } catch (err) {
       console.error(err);
       toast.error("Failed to submit ads. Please try again.");
     }
   };
+  const handleSubmit1 = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("url", url);
+    formData.append("file", featuredImage);
+    formData.append("subscrption", plan1?.subscrption);
+    formData.append("price", plan1?.price);
+    formData.append("selectads", option);
+
+    try {
+   
+      const res = await axios.post(
+        `${process.env.REACT_APP_API}/api/v1/create-ads`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const postData=res.data?.savedata
+
+      const mydata=[{
+        subscrption:postData?.subscrption,
+        price:postData?.price,
+        productId:postData?._id,
+        qty:1,
+      }]
+
+      if (isAdmin==true) {
+        toast("Created Successfully!");
+        setTimeout(() => {
+          navigate("/all-ads-views")
+        }, 1000);
+      } 
+  
+     if(postData?.subscrption !=="free"){
+      MakePayment(mydata)
+
+     }
+
+
+      // toast.success(res.data.message);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to submit ads. Please try again.");
+    }
+  };
+
+
+
+
 
   return (
     <Layout>
@@ -236,18 +298,18 @@ const CreateAds = () => {
         {step === 2 && (
           <>
             {option === "sponseredAds" && (
-              <div className="bg-yellow-300 w-full">
-                <Pricing
-                  onSubmit={handleSubmit}
-                  setPlan={setPlan}
+              <div className="">
+                <SponsoredAds
+                  onSubmit1={handleSubmit1}
+                  setPlan1={setPlan1}
                   prevStep={prevStep}
                 />
               </div>
             )}
 
             {option === "fixedAds" && (
-              <div className="bg-red-300 w-full">
-                <Pricing
+              <div className="">
+                <FixedAdsPricing
                   onSubmit={handleSubmit}
                   setPlan={setPlan}
                   prevStep={prevStep}

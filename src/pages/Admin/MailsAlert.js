@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AdminLayout from "../../components/Dashboard/Layout/adminlayout";
 import axios from "axios";
 import AdminAlertTable from "./AdminAlertTable";
-import CommentAlertTable from "./CommentAlertTable";
+import AdsAlertTable from "./AdsAlertTable";
 import { ColorRing } from "react-loader-spinner";
 
 
@@ -18,6 +18,7 @@ const MailsAlert = () => {
   useEffect(() => {
     setLoader(true);
     getAllListingData();
+    getAllSponsoredData();
    
   }, []);
 
@@ -30,6 +31,24 @@ const MailsAlert = () => {
       const newdata=res?.data.filter(item => item?.newAds==true)
       setAllListing(newdata);
   
+      setLoader(false);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      setLoader(false);
+    }
+  };
+
+  // ------------------------------get all sponsored--------------------------------
+
+  const getAllSponsoredData = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/gets-all-ads`
+      );
+     
+      const newdata=res?.data.filter(item => item?.newAds==true)
+     
+      setAllAds(newdata)
       setLoader(false);
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -76,7 +95,7 @@ const MailsAlert = () => {
         <div className="flex flex-col w-full">
           <div className="w-full sm:px-4">
             <AdminAlertTable allListing={allListing}/>
-            {/* <CommentAlertTable allAds={allAds}/> */}
+            <AdsAlertTable allAds={allAds}/>
             <p className="text-blue-600 p-2 font-semibold">
               {loader ? "Loading..." : ""}
             </p>

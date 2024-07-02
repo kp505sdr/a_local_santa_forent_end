@@ -114,6 +114,8 @@ import AllAds from "./pages/user/allads";
 import AdsDetails from "./pages/user/adsdetails";
 import AllAdsView from "./pages/Admin/AllAdsView";
 import CreateAdsWithAdmin from "./pages/Admin/CreateAdsWithAdmin";
+import SponsoredAds from "./components/Pricing/SponsoredAds";
+import SponsoredAdsAdmin from "./pages/Admin/SponsoredAdsAdmin";
 
 function App() {
   const user = useSelector((state) => state.user);
@@ -586,7 +588,21 @@ function App() {
         path="/comments-view/:id"
         element={<ProtectedAdmin Admindashboard={CommentView} />}
       />
+
+    <Route
+        exact
+        path="/fixed-ads-admin"
+        element={<ProtectedAdmin Admindashboard={FixedAds} />}
+      />
+         <Route
+        exact
+        path="/sponsored-ads-admin"
+        element={<ProtectedAdmin Admindashboard={SponsoredAdsAdmin} />}
+      />
+
+
     </Routes>
+    
   );
 }
 

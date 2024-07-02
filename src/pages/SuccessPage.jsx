@@ -148,8 +148,9 @@ const SuccessPage = () => {
   //--------------------- Function to send email to client-----------------------------
   const sendEmailToClient = async (data) => {
     try {
-      const res = await axios.post(`${process.env.REACT_APP_API}/api/v1/order-confirmation-mail`, { data });
+      const res = await axios.post(`${process.env.REACT_APP_API}/api/v1/ads-order-mail-to-client`, { data });
       // Handle success if needed
+   
     } catch (error) {
       console.error('Error while sending email to client:', error);
       // Handle error here
@@ -159,12 +160,13 @@ const SuccessPage = () => {
   //----------------------- Function to update payment-----------------------------------
   const paymentUpdateFun = async (data) => {
     try {
-      const res = await axios.put(`${process.env.REACT_APP_API}/api/v1/paymentUpdate`, { data, productId });
+      const res = await axios.put(`${process.env.REACT_APP_API}/api/v1/update-payment-status-ads`, { data, productId });
       sendEmailToClient(res.data);
+     
       if (isAdmin) {
-        navigate("/listing");
+        navigate("/all-ads-view");
       } else {
-        navigate("/my-listing");
+        navigate("/ads");
       }
     } catch (error) {
       console.error('Error while updating payment status:', error);
@@ -175,12 +177,16 @@ const SuccessPage = () => {
   };
 
   useEffect(() => {
+    setLoader(true)
     if (paymentDone?.payment_status === "paid") {
-      paymentUpdateFun({
+
+      let data={
         payment_status: paymentDone.payment_status,
         txnId: paymentDone.payment_intent,
         paymentDate: Date.now()
-      });
+      }
+
+      paymentUpdateFun(data);
     }
   }, [paymentDone]);
 

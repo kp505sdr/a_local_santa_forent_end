@@ -254,45 +254,53 @@ const PostAnAdvertise = () => {
         }
       );
 
-      const postData=res.data
-      const mydata=[{
-        subscrption:postData?.subscrption,
-        price:postData?.price,
-        productId:postData?._id,
-        qty:1,
-      }]
-
-
-      if (postData?.subscrption=="free" && isAdmin==true) {
+      if (isAdmin==true) {
         toast("Created Successfully!");
         setTimeout(() => {
           navigate("/listing")
         }, 1000);
-      } else {
-
-        toast.error(res?.data?.message);
       }
-
-      if (postData?.subscrption=="free" && isAdmin==false) {
+      if (isAdmin==false) {
         toast("Created Successfully!");
         setTimeout(() => {
           navigate("/my-listing")
         }, 1000);
-      } else {
+      } 
+
+    //   const postData=res.data
+    //   const mydata=[{
+    //     subscrption:postData?.subscrption,
+    //     price:postData?.price,
+    //     productId:postData?._id,
+    //     qty:1,
+    //   }]
+
+
+      // if (postData?.subscrption=="free" && isAdmin==true) {
+      //   toast("Created Successfully!");
+      //   setTimeout(() => {
+      //     navigate("/listing")
+      //   }, 1000);
+      // } else {
+
+    //     toast.error(res?.data?.message);
+    //   }
+
+      // if (postData?.subscrption=="free" && isAdmin==false) {
+      //   toast("Created Successfully!");
+      //   setTimeout(() => {
+      //     navigate("/my-listing")
+      //   }, 1000);
+      // } else {
     
-        toast.error(res?.data?.message);
-      }
+    //     toast.error(res?.data?.message);
+    //   }
 
-     if(postData?.subscrption !=="free"){
-      MakePayment(mydata)
+    //  if(postData?.subscrption !=="free"){
+    //   MakePayment(mydata)
 
-     }
+    //  }
 
-    
-
-  
-
-      // -----------------------------------------------------------------------------------------
     } catch (error) {
       console.log(error);
     }

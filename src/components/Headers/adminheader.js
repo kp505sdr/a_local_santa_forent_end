@@ -17,6 +17,9 @@ export default function AdminHeaderStats({
   allBlog,
   allComment,
   allReviews,
+  sponsoredAd,
+  fixedAd,
+  NewSponsoredAd,
   loader,
 }) {
   return (
@@ -107,11 +110,15 @@ export default function AdminHeaderStats({
                   />
                 </div>
               </Link>
-              <Link to="/sponsored-all-ads">
+              <Link to="/sponsored-ads-admin">
                 <div className="w-full sm:px-4">
                   <CardStats
                     statSubtitle="Spansored Ads"
-                    statTitle="924"
+                    statTitle={loader ? (
+                      <b className="text-blue-600 p-1 text-xs">Loading...</b>
+                    ) : (
+                      sponsoredAd?.length
+                    )}
                     statArrow="down"
                     statPercent="1.10"
                     statPercentColor="text-orange-500"
@@ -121,11 +128,15 @@ export default function AdminHeaderStats({
                   />
                 </div>
               </Link>
-              <Link to="/fixed-ads">
+              <Link to="/fixed-ads-admin">
                 <div className="w-full sm:px-4">
                   <CardStats
                     statSubtitle="Fixed Ads"
-                    statTitle="10563"
+                    statTitle={ loader ? (
+                      <b className="text-blue-600 p-1 text-xs">Loading...</b>
+                    ) : (
+                      fixedAd?.length
+                    )}
                     statArrow="down"
                     statPercent="1.10"
                     statPercentColor="text-orange-500"
@@ -163,7 +174,7 @@ export default function AdminHeaderStats({
                       loader ? (
                         <b className="text-blue-600 p-1 text-xs">Loading...</b>
                       ) : (
-                        newListing?.length
+                        newListing?.length + NewSponsoredAd?.length
                       )
                     }
                     statArrow="up"

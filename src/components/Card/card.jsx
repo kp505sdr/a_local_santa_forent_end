@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 const Card = ({ key, hrefLink, img, text, textSize }) => {
+  console.log("img",img)
   return (
     <div className="shadow-lg">
       <div className="relative">
@@ -10,11 +11,11 @@ const Card = ({ key, hrefLink, img, text, textSize }) => {
           rel="noreferrer"
           className="bg-green-500"
         >
-          <img className="" src={img} alt="Sunset in the mountains" />
+          <img className="" src={`${process.env.REACT_APP_API}/${img?.image?.path}`} alt="img" />
           <div className="hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 bg-gray-900 opacity-25"></div>
         </a>
 
-        <Link to="#">
+        {/* <Link to="#">
           <div className=" absolute bottom-0 right-0 bg-red-500 px-2 text-white flex flex-col items-center justify-center mt-3 hover:bg-white hover:text-indigo-600 transition duration-500 ease-in-out">
             {text && (
               <span className={`font-bold whitespace-nowrap ${textSize}`}>
@@ -22,7 +23,7 @@ const Card = ({ key, hrefLink, img, text, textSize }) => {
               </span>
             )}
           </div>
-        </Link>
+        </Link> */}
       </div>
       {/* </div> */}
     </div>

@@ -27,14 +27,14 @@ const AdminAlertTable = ({ allListing }) => {
 
   return (
     <>
-     {allListing?.length !==0?
+
      <>
       <div className="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-8">
         <div className="align-middle rounded-tl-lg rounded-tr-lg inline-block w-full overflow-hidden px-2 py-3">
           <div className="flex justify-between items-center">
              <div className="flex justify-center item-center">
              <p>New Listing </p>
-              <p className="ml-4 mt-1 text-center h-5 w-5 bg-red-600 rounded-full text-white">{allListing?.length}</p>
+              <p className="ml-4 mt-1 text-center h-6 w-6 bg-red-600 rounded-full text-white">{allListing?.length}</p>
              </div>
             {/* <div className="flex gap-x-2">
               <Link
@@ -249,7 +249,7 @@ const AdminAlertTable = ({ allListing }) => {
         )}
       </ul>
       </>
-     :<span className="text-red-600 text-md">No Any Alerts!</span>}
+  
     </>
   );
 };

@@ -17,6 +17,7 @@ const AllAds = () => {
   useEffect(() => {
     setLoader(true);
     getSponsoredAdsData();
+    GrabageClaer()
   }, []);
 
   const getSponsoredAdsData = async () => {
@@ -44,7 +45,7 @@ const AllAds = () => {
 
   const delethandle = async (id) => {
     const confirmed = window.confirm(
-      "Are you sure you want to delete SponsoredAds?"
+      "Are you sure you want to delete Ads?"
     );
     if (!confirmed) {
       return;
@@ -55,7 +56,8 @@ const AllAds = () => {
         `${process.env.REACT_APP_API}/api/v1/delete-Ads/${id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setAllListing(res?.data || []);
+ 
+      getSponsoredAdsData();
     } catch (error) {
       console.error("Error deleting sponsored ad:", error);
     } finally {
@@ -63,6 +65,21 @@ const AllAds = () => {
     }
   };
 
+
+  const GrabageClaer=async()=>{
+    try {
+      const res = await axios.delete(
+        `${process.env.REACT_APP_API}/api/v1/clear-grabage-ads`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.log("error",error)
+    }
+  }
   return (
     <Layout>
       <div className="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-8">
@@ -105,7 +122,7 @@ const AllAds = () => {
             <thead className="bg-gray-800">
               <tr>
                 <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
-                  ID
+                  Ads ID
                 </th>
                 <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
                   Url
@@ -113,6 +130,13 @@ const AllAds = () => {
                 <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
                   Ads Type
                 </th>
+                <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
+                 Price
+                </th>
+                <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
+                Payment ID
+                </th>
+                
                 <th className="px-6 py-3 text-left text-sm leading-4 text-white tracking-wider">
                   Start Date
                 </th>
@@ -128,24 +152,31 @@ const AllAds = () => {
               <p className="text-blue-500 font-semibold">
                 {loader ? "Loading..." : ""}
               </p>
-              {currentListings.length > 0 ? (
+              {currentListings?.length > 0 ? (
                 currentListings?.map((res, i) => (
                   <tr key={i} className="border-b border-gray-500">
-                    <td className="px-6 py-3 whitespace-nowrap text-blue-900 border-gray-500 text-sm leading-5">
-                      {i + 1}
+                    <td className="px-6 py-3 whitespace-nowrap text-gray-900 border-gray-500 text-sm leading-5">
+                      {res?._id}
                     </td>
                     <td className="px-6 whitespace-nowrap text-blue-900 border-gray-500 text-sm leading-5">
-                      <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                      <span className="relative inline-block px-3 py-1 font-semibold text-blue-900 leading-tight">
                         <span
                           aria-hidden
-                          className="absolute inset-0 bg-green-200 opacity-50 rounded-sm"
+                          className="absolute inset-0 rounded-sm"
                         />
-                        <span className="relative text-xs">{res?.url}</span>
+                        <a href={`${res?.url}`} target="_blank" className="relative text-xs cursor-pointer hover:text-blue-600">{res?.url}</a>
                       </span>
                     </td>
                     <td className="px-6 whitespace-nowrap text-green-900 border-gray-500 text-sm leading-5">
                       {res?.selectads}
                     </td>
+                    <td className="px-6 whitespace-nowrap text-blue-500 border-gray-500 text-sm leading-5">
+                      ${res?.price}
+                    </td>
+                    <td className="px-6 whitespace-nowrap text-gray-900 border-gray-500 text-sm leading-5">
+                      {res?.txnId}
+                    </td>
+                    
                     <td className="px-6 whitespace-nowrap text-green-900 border-gray-500 text-sm leading-5">
                       {dateFormat(res?.createdAt, "mmmm d, yyyy")}
                     </td>
@@ -157,8 +188,8 @@ const AllAds = () => {
                         <Link to={`/ads-details/${res?._id}`}>
                           <i className="fa fa-eye text-green-500 hover:text-green-400"></i>
                         </Link>
-                        <button onClick={() => delethandle(res._id)}>
-                          <i className="text-red-500 hover:text-red-400 fas fa-trash-alt"></i>
+                        <button onClick={() => delethandle(res?._id)}>
+                          <i className="text-red-500 hover:text-red-400 fas fa-trash-alt ml-4"></i>
                         </button>
                       </div>
                     </td>

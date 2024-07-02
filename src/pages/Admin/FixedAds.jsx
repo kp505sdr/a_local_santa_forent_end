@@ -1,10 +1,20 @@
+// import React from 'react'
+
+// const FixedAds = () => {
+//   return (
+//     <div>FixedAds</div>
+//   )
+// }
+
+// export default FixedAds
+
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import dateFormat from "dateformat";
 import axios from "axios";
 import AdminLayout from "../../components/Dashboard/Layout/adminlayout";
 
-const AllAdsView = () => {
+const FixedAds = () => {
   const userInfo = localStorage.getItem("UserInformation");
   const userdata = JSON.parse(userInfo);
   let token = userdata?.token;
@@ -23,7 +33,10 @@ const AllAdsView = () => {
         `${process.env.REACT_APP_API}/api/v1/gets-all-ads`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setAllListing(res?.data);
+
+      const fixedAds=res?.data?.filter(item => item?.selectads=="fixedAds")
+      setAllListing(fixedAds)
+     
       setLoader(false);
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -266,4 +279,4 @@ const AllAdsView = () => {
   );
 };
 
-export default AllAdsView;
+export default FixedAds;

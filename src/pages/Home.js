@@ -35,7 +35,7 @@ import ShowBlogs from "./ShowBlogs";
 
 export const responsiveConfig = {
   400: {
-    slidesPerView: 1,
+    slidesPerView: 5,
     spaceBetween: 10,
   },
   480: {
@@ -110,11 +110,15 @@ const Home = () => {
 
   const [Entrepreneurial, setEntrepreneurial] = useState([]);
   const [PopularEntrepreneurial, setPopularEntrepreneurial] = useState([]);
+  const [AllsponseredAds, setAllsponseredAds] = useState();
+
+  
 
   useEffect(() => {
    
     getAllBlogData();
     getAllListingData();
+    getSponsoredAdsData()
   
   }, []);
   // --------------------------call-all-blogs-api----------------------------------
@@ -340,6 +344,24 @@ const Home = () => {
     }
   };
 
+  // --------------------------sponsored-ads-api-----------------------------------------------
+  const getSponsoredAdsData = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_API}/api/v1/gets-all-ads`,
+      
+      );
+
+      const sponseredAds=res?.data?.filter((item) => item?.selectads=="sponseredAds" && item?.status === "active")
+      setAllsponseredAds(sponseredAds)
+     
+     
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+
+    }
+  };
+
   return (
     <Layout titile="Alocalsanta">
       <div
@@ -356,7 +378,8 @@ const Home = () => {
                 <h2 className="text-xl sm:text-2xl font-semibold">Sponsered</h2>
               </div>
               <div className="w-full">
-                <ChatNow responsiveConfig={responsiveConfig} text="Chat Now" />
+                <ChatNow responsiveConfig={responsiveConfig} text="Chat Now" AllsponseredAds={AllsponseredAds} />
+                
               </div>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 py- gap-y-4 h-full mt-5">
@@ -412,8 +435,23 @@ const Home = () => {
                   )
                 }
               />
-              {/* ----------------------------------------------------------------------------------------- */}
 
+
+
+              
+              {/* ----------------------------------------------------------------------------------------- */}
+              
+            <div className="px-2 sm:hidden">
+                <div className="py-4">
+                  <h2 className="text-xl sm:text-2xl font-semibold">
+                    Sponsered
+                  </h2>
+                </div>
+                <div className="w-full">
+                <ChatNow responsiveConfig={responsiveConfig} text="Chat Now" AllsponseredAds={AllsponseredAds} />
+                
+                </div>
+              </div>
               <LisitingTable
                 titile="Local Talks"
                 buttonText="Create Listing"
@@ -440,21 +478,9 @@ const Home = () => {
                 }
               />
               {/* only mobile device */}
+           
 
-              <div className="px-2 sm:hidden">
-                <div className="py-4">
-                  <h2 className="text-xl sm:text-2xl font-semibold">
-                    Sponsered
-                  </h2>
-                </div>
-                <div className="w-full">
-                  <ChatNow
-                    responsiveConfig={responsiveConfig1}
-                    text="Chat Now"
-                    textSize="text-xs"
-                  />
-                </div>
-              </div>
+              
 
               <LisitingTable
                 titile="List Buy & Sell"
@@ -562,20 +588,18 @@ const Home = () => {
               }
             /> */}
             </div>
-            <div className="px-2">
-              <div className="py-4">
-                <h2 className="text-xl sm:text-2xl font-semibold">
-                  Recent Business Listing
-                </h2>
+           
+            <div className="px-2 sm:hidden">
+                <div className="py-4">
+                  <h2 className="text-xl sm:text-2xl font-semibold">
+                    Sponsered
+                  </h2>
+                </div>
+                <div className="w-full">
+                <ChatNow responsiveConfig={responsiveConfig} text="Chat Now" AllsponseredAds={AllsponseredAds} />
+                
+                </div>
               </div>
-              <div className="w-full">
-                <ChatNow
-                  responsiveConfig={responsiveConfig1}
-                  text="Chat Now"
-                  textSize="text-xs"
-                />
-              </div>
-            </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 py- gap-y-4 h-full mt-5">
               <LisitingTable
@@ -638,13 +662,12 @@ const Home = () => {
                   </h2>
                 </div>
                 <div className="w-full">
-                  <ChatNow
-                    responsiveConfig={responsiveConfig1}
-                    text="Chat Now"
-                    textSize="text-xs"
-                  />
+                <ChatNow responsiveConfig={responsiveConfig} text="Chat Now" AllsponseredAds={AllsponseredAds} />
+                
                 </div>
               </div>
+
+             
 
               <LisitingTable
                 titile="Health and Wellness"
@@ -698,20 +721,17 @@ const Home = () => {
               />
             </div>
 
-            <div className="px-2">
-              <div className="py-4">
-                <h2 className="text-xl sm:text-2xl font-semibold">
-                  Facebook Ads
-                </h2>
+            <div className="px-2 sm:hidden">
+                <div className="py-4">
+                  <h2 className="text-xl sm:text-2xl font-semibold">
+                    Sponsered
+                  </h2>
+                </div>
+                <div className="w-full">
+                <ChatNow responsiveConfig={responsiveConfig} text="Chat Now" AllsponseredAds={AllsponseredAds} />
+                
+                </div>
               </div>
-              <div className="w-full">
-                <ChatNow
-                  responsiveConfig={responsiveConfig1}
-                  text="Chat Now"
-                  textSize="text-xs"
-                />
-              </div>
-            </div>
           </div>
           <div className="h-64 bg-yellow-300 m-2 sm:m-0">
             <div className="w-32 sm:w-48 md:w-60">ads</div>

@@ -33,12 +33,13 @@ const AdsDetailsView = () => {
       navigate("/login");
     }
     getSponsoredAdsData();
+    updatefun(id);
   }, []);
 
   const getSponsoredAdsData = async () => {
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_API}/api/v1/get-SponseredAds/${id}`,
+        `${process.env.REACT_APP_API}/api/v1//get-ads/${id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -50,16 +51,18 @@ const AdsDetailsView = () => {
 
   // ---------------------------update-status---------------------------
   const updatefun = async (id) => {
+    console.log("id",id)
     if (!token) {
       navigate("/login");
     }
     try {
       const res = await axios.put(
-        `${process.env.REACT_APP_API}/api/v1/update-SponseredAds/${id}`,
+        `${process.env.REACT_APP_API}/api/v1/update-ads/${id}`,
         data,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log("after update", res);
+     
+      getSponsoredAdsData()
     } catch (error) {
       console.error("Error Status Update:", error);
     }
@@ -67,17 +70,25 @@ const AdsDetailsView = () => {
 
   const data = {
     status: ChangeStatus,
-    subscrption: Subscrption,
-    expDate: minDate,
+    expDate:minDate,
+    newAds:false
+
   };
   const UpdatedStatus = async (id) => {
-    // updatefun(id);
+    updatefun(id);
   };
 
+
+  console.log("ListingDetails",ListingDetails)
   return (
     <AdminLayout>
+
       <div className="pb-10">
+    
         <div className="m-0.5 lg:w-11/12 mx-auto">
+       
+       <img src={`${process.env.REACT_APP_API}/${ListingDetails?.image?.path}`} alt="img" className="h-48 m-auto"/>
+    
           <div className="w-full md:pt-10 hidden md:block">
             <div className="">
               <h2 className="font-semibold text-xl"> Details :</h2>
@@ -100,8 +111,8 @@ const AdsDetailsView = () => {
               <div className="">
                 <div className="flex gap-x-2 items-center py-1.5">
                   <i className="fa-solid fa-globe  text-teal-400"></i>{" "}
-                  <h3 className="font-semibold">Url :</h3>{" "}
-                  <p>{ListingDetails?.url}</p>
+                  <h3 className="font-semibold">Url : <a href={`${ListingDetails?.url}`} className="text-blue-500 hover:text-blue-600 font-normal cursor-pointer" target="_blank">{ListingDetails?.url}</a></h3>{" "}
+                  
                 </div>
                 <div className="flex gap-x-2 items-center py-1.5">
                   <i className="fa-solid fa-clock text-teal-400"></i>{" "}
@@ -120,7 +131,7 @@ const AdsDetailsView = () => {
                 <p className="text-sm">
                   Category :{" "}
                   <span className="text-gray-900">
-                    {ListingDetails?.category}
+                    {ListingDetails?.selectads}
                   </span>
                 </p>
                 <p className="text-sm">
@@ -162,7 +173,7 @@ const AdsDetailsView = () => {
                   </button>
                 </div>
 
-                <div className="mt-2">
+                {/* <div className="mt-2">
                   <p className="text-sm text-gray-500">Update subscrption</p>
                   <select
                     onChange={(e) => setSubscrption(e.target.value)}
@@ -182,7 +193,7 @@ const AdsDetailsView = () => {
                   >
                     Update
                   </button>
-                </div>
+                </div> */}
 
                 <div className="mt-2">
                   <p className="text-sm text-gray-500">Update Expiry Date</p>
@@ -200,6 +211,7 @@ const AdsDetailsView = () => {
                   </button>
                 </div>
               </div>
+              
             </div>
           </div>
         </div>
@@ -232,8 +244,8 @@ const AdsDetailsView = () => {
                       <div className="">
                         <div className="flex gap-x-2 items-center py-1.5">
                           <i className="fa-solid fa-globe  text-teal-400"></i>{" "}
-                          <h3 className="font-semibold">Url :</h3>{" "}
-                          <p>{ListingDetails?.url}</p>
+                          <h3 className="font-semibold">Url : <a href={`${ListingDetails?.url}`} className="text-blue-500 hover:text-blue-600 font-normal cursor-pointer" target="_blank">{ListingDetails?.url}</a></h3>{" "}
+                         
                         </div>
                         <div className="flex gap-x-2 items-center py-1.5">
                           <i className="fa-solid fa-clock text-teal-400"></i>{" "}
@@ -260,7 +272,7 @@ const AdsDetailsView = () => {
                         <p className="text-sm">
                           Category :{" "}
                           <span className="text-gray-900">
-                            {ListingDetails?.category}
+                            {ListingDetails?.selectads}
                           </span>
                         </p>
                         <p className="text-sm">
@@ -302,7 +314,7 @@ const AdsDetailsView = () => {
                           </button>
                         </div>
 
-                        <div className="mt-2">
+                        {/* <div className="mt-2">
                           <p className="text-sm text-gray-500">
                             Update subscrption
                           </p>
@@ -324,7 +336,7 @@ const AdsDetailsView = () => {
                           >
                             Update
                           </button>
-                        </div>
+                        </div> */}
 
                         <div className="mt-2">
                           <p className="text-sm text-gray-500">

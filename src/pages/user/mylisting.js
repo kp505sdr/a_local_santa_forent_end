@@ -14,7 +14,7 @@ const Mylisting = () => {
 
   useEffect(() => {
     setLoading(true);
-    GarbageFun()
+    // GarbageFun()
     getAllJobData();
   }, [token]);
 
@@ -37,21 +37,21 @@ const Mylisting = () => {
   };
 
   // -------------------------garbage-fun---------------------------------
-  const GarbageFun = async () => {
-    try {
-      const res = await axios.delete(
-        `${process.env.REACT_APP_API}/api/v1/grabage-ads`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+  // const GarbageFun = async () => {
+  //   try {
+  //     const res = await axios.delete(
+  //       `${process.env.REACT_APP_API}/api/v1/grabage-ads`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
   
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  };
+  //   } catch (error) {
+  //     console.error("Error fetching user data:", error);
+  //   }
+  // };
 
   return (
     <Layout>
